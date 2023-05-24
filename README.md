@@ -143,7 +143,16 @@ A program that outputs n numbers from fibonnaci sequence
 
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/1a34c950-937f-4338-88cf-a07f0e1f05f5)
 
-## Prime Values
+## Even number in the stack
 
-A program that output n prime numbers
+A program that output n even numbers and also save it in the stack
+
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/26466a16-1bfe-4b34-a0b1-bcf987e00bfc)
+
+A print of the stack with the value 100 on top of it (0x00000064)
+
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/2f5f895d-30b4-455a-9a07-433f47bc82c2)
+
+
+
 
