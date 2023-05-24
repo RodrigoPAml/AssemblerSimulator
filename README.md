@@ -14,6 +14,24 @@ The program uses windows form for the user interface part
 
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/3b1a2ad0-bbe5-4513-99cc-2fc52398139f)
 
+# Views
+
+## Instructions memory
+
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/f397f439-6f3e-4c72-9470-70f5a0c82c10)
+
+## Labels View
+
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/ddf7c58e-7b11-4c06-a168-94708d78c70e)
+
+## Memory View
+
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/aa426e56-bcaf-4992-b86e-20fb6bfaf522)
+
+## Registers View
+
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/ade239a1-21da-4b71-815e-42d2e1d1f901)
+
 # Implemented instructions
 
 List of implementes instructions from MIPS
