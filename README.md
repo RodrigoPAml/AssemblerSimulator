@@ -40,6 +40,12 @@ Show registers values
 
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/ade239a1-21da-4b71-815e-42d2e1d1f901)
 
+## Code and output view
+
+Show the code with options in the top and output
+
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/d4756665-8869-4274-82b2-cf1480796539)
+
 # Implemented instructions
 
 List of implementes instructions from MIPS
