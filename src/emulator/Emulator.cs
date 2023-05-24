@@ -91,7 +91,6 @@ namespace AssemblerEmulator
             _registers.Add(new Register("v1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
             _registers.Add(new Register("re", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("v0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("gp", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("sp", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("ra", Enumerable.Repeat((byte)0x0, 4).ToArray()));
