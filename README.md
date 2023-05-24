@@ -45,6 +45,9 @@ Show registers values
 List of implementes instructions from MIPS
 
 ## Arithmetic
+
+Instructions to do arithmetic operations
+
 ```asm
 add t0 t1 t2
 addi t0 t1 10
@@ -55,6 +58,8 @@ muli t0 t1 t2
 ```
 
 ## Logic
+
+Instructios to do logic operations
 
 sfl is shift left and sfr is shift right
 
@@ -69,6 +74,8 @@ sfr t1 t2 t3
 
 ## Flow Control
 
+Instructions to control program flow
+
 ```asm
 j label
 jal label
@@ -80,6 +87,8 @@ sgt t0 t1 t2
 ```
 
 ## Memory
+
+Instructions to control program memory
 
 ```asm
 move t0 t1
