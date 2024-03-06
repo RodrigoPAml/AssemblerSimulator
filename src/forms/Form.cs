@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace AssemblerEmulator
 {
@@ -16,9 +17,19 @@ namespace AssemblerEmulator
         private static Form _form;
 
         /// <summary>
+        /// Timer for events
+        /// </summary>
+        private Timer _timer = new Timer();
+
+        /// <summary>
         /// Opened file
         /// </summary>
-        public string _openFile = string.Empty;    
+        private string _openFile = string.Empty;
+
+        /// <summary>
+        /// If text has changed
+        /// </summary>
+        private bool _hasChange = false;
 
         public Form()
         {
@@ -30,6 +41,11 @@ namespace AssemblerEmulator
             PopulateMemoryView();
             PopulateInstructionsView();
             PopulateRegistersView();
+
+            _timer = new Timer();
+            _timer.Interval = 5000;
+            _timer.Tick += Beautify;
+            _timer.Start();
         }
 
         /// <summary>
@@ -226,65 +242,63 @@ namespace AssemblerEmulator
             }
         }
 
-
-        // Lock the component update to avoid flicker
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        public static extern bool LockWindowUpdate(IntPtr hWndLock);
-
         /// <summary>
         /// When the code changes update the instruction memory and labels
-        /// Also update the editor text colors
         /// </summary>
         private void richTextBoxCode_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                LockWindowUpdate(richTextBoxCode.Handle);
+            PopulateInstructionsView();
 
-                PopulateInstructionsView();
+            _hasChange = true;
+        }
 
-                CheckKeyword("add", Color.Green);
-                CheckKeyword("addi", Color.Green);
-                CheckKeyword("sub", Color.Green);
-                CheckKeyword("mul", Color.Green);
-                CheckKeyword("muli", Color.Green);
-                CheckKeyword("div", Color.Green);
+        /// <summary>
+        /// Put colors on syntax
+        /// </summary>
+        private void Beautify(object sender, EventArgs e)
+        {
+            if (!_hasChange)
+                return;
 
-                CheckKeyword("or", Color.Green);
-                CheckKeyword("xor", Color.Green);
-                CheckKeyword("and", Color.Green);
-                CheckKeyword("not", Color.Green);
-                CheckKeyword("sfl", Color.Green);
-                CheckKeyword("sfr", Color.Green);
+            _hasChange = false;
 
-                CheckKeyword("jr", Color.Green);
-                CheckKeyword("j", Color.Green);
-                CheckKeyword("beq", Color.Green);
-                CheckKeyword("bne", Color.Green);
-                CheckKeyword("jal", Color.Green);
-                CheckKeyword("slt", Color.Green);
-                CheckKeyword("sgt", Color.Green);
+            CheckKeyword("add", Color.Green);
+            CheckKeyword("addi", Color.Green);
+            CheckKeyword("sub", Color.Green);
+            CheckKeyword("mul", Color.Green);
+            CheckKeyword("muli", Color.Green);
+            CheckKeyword("div", Color.Green);
 
-                CheckKeyword("lw", Color.Green);
-                CheckKeyword("sw", Color.Green);
-                CheckKeyword("sb", Color.Green);
-                CheckKeyword("lb", Color.Green);
-                CheckKeyword("move", Color.Green);
+            CheckKeyword("or", Color.Green);
+            CheckKeyword("xor", Color.Green);
+            CheckKeyword("and", Color.Green);
+            CheckKeyword("not", Color.Green);
+            CheckKeyword("sfl", Color.Green);
+            CheckKeyword("sfr", Color.Green);
 
-                CheckKeyword("syscall", Color.Orange);
+            CheckKeyword("jr", Color.Green);
+            CheckKeyword("j", Color.Green);
+            CheckKeyword("beq", Color.Green);
+            CheckKeyword("bne", Color.Green);
+            CheckKeyword("jal", Color.Green);
+            CheckKeyword("slt", Color.Green);
+            CheckKeyword("sgt", Color.Green);
 
-                foreach (var register in _emulator.GetRegisters())
-                    CheckKeyword(register.Name, Color.Blue);
+            CheckKeyword("lw", Color.Green);
+            CheckKeyword("sw", Color.Green);
+            CheckKeyword("sb", Color.Green);
+            CheckKeyword("lb", Color.Green);
+            CheckKeyword("move", Color.Green);
 
-                CheckKeyword(new Regex(".*--.*"), Color.DarkGreen);
+            CheckKeyword("syscall", Color.Orange);
 
-                CheckKeyword("0x", Color.Red);
-                CheckKeyword(":", Color.HotPink);
-            }
-            finally
-            {
-                LockWindowUpdate(IntPtr.Zero);
-            }
+            foreach (var register in _emulator.GetRegisters())
+                CheckKeyword(register.Name, Color.Blue);
+
+            CheckKeyword(new Regex(".*--.*"), Color.DarkGreen);
+
+            CheckKeyword("0x", Color.Red);
+            CheckKeyword(":", Color.HotPink);
         }
 
         /// <summary>
