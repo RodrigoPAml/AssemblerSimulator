@@ -29,7 +29,7 @@ namespace AssemblerEmulator
         /// <summary>
         /// If text has changed
         /// </summary>
-        private bool _hasChange = false;
+        private bool _hasChanged = false;
 
         public Form()
         {
@@ -248,8 +248,7 @@ namespace AssemblerEmulator
         private void richTextBoxCode_TextChanged(object sender, EventArgs e)
         {
             PopulateInstructionsView();
-
-            _hasChange = true;
+            _hasChanged = true;
         }
 
         /// <summary>
@@ -257,10 +256,10 @@ namespace AssemblerEmulator
         /// </summary>
         private void Beautify(object sender, EventArgs e)
         {
-            if (!_hasChange)
+            if (!_hasChanged)
                 return;
 
-            _hasChange = false;
+            this.richTextBoxCode.SuspendLayout();
 
             CheckKeyword("add", Color.Green);
             CheckKeyword("addi", Color.Green);
@@ -299,6 +298,10 @@ namespace AssemblerEmulator
 
             CheckKeyword("0x", Color.Red);
             CheckKeyword(":", Color.HotPink);
+        
+            this.richTextBoxCode.ResumeLayout();
+
+            _hasChanged = false;
         }
 
         /// <summary>
@@ -330,8 +333,6 @@ namespace AssemblerEmulator
         /// <param name="color"></param>
         private void CheckKeyword(string word, Color color)
         {
-            this.richTextBoxCode.SuspendLayout();
-
             if (this.richTextBoxCode.Text.Contains(word))
             {
                 int index = -1;
@@ -345,8 +346,6 @@ namespace AssemblerEmulator
                     this.richTextBoxCode.SelectionColor = Color.Black;
                 }
             }
-
-            this.richTextBoxCode.ResumeLayout();
         }
 
         /// <summary>
