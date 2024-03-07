@@ -1,7 +1,4 @@
-﻿using System.Configuration;
-using System.Globalization;
-
-namespace AssemblerEmulator
+﻿namespace AssemblerEmulator
 {
     public partial class Emulator
     {

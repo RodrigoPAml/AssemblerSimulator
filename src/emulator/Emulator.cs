@@ -221,7 +221,6 @@
                 case "syscall":
                     if (parts.Count != 1)
                         throw new Exception("Invalid syscall format");
-
                     Syscall();
                     break;
                 default:
