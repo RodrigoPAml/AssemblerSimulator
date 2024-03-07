@@ -1,6 +1,4 @@
-﻿using static System.Windows.Forms.DataFormats;
-
-namespace AssemblerEmulator
+﻿namespace AssemblerEmulator
 {
     public partial class Emulator
     {
@@ -10,7 +8,7 @@ namespace AssemblerEmulator
         private List<string> _instructions = new List<string>();
 
         /// <summary>
-        /// Label in the code (reference an address)
+        /// Label in the code (reference to an address)
         /// </summary>
         private Dictionary<string, int> _labels = new Dictionary<string, int>();
 
@@ -35,7 +33,7 @@ namespace AssemblerEmulator
         private string ProgramCounterAdrress => $"0x{string.Join("", GetRegister("pc").Value.Select(x => string.Format("{0:X2}", x)))}";
 
         /// <summary>
-        /// Callbacks to notify changes in memory and registers
+        /// Callbacks to notify changes in memory and registers, or syscalls
         /// </summary>
         private OnMemoryChange _onMemoryChange;
         private OnRegisterChange _onRegisterChange;
