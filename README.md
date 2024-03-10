@@ -182,8 +182,5 @@ A program that print some ascii chars
 ## Float
 A program that do a float sum and print it
 
-![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/765d3e38-7590-49df-91eb-a1fae3657782)
-
-
-
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/1648e049-328e-4aa3-9e70-a14376c06e68)
 
