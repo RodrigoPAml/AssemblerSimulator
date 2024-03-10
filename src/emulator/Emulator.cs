@@ -86,6 +86,7 @@ namespace AssemblerEmulator
             _labels.Clear();
 
             _registers.Add(new Register("zero", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add(new Register("one", 1));
 
             _registers.Add(new Register("s0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("s1", Enumerable.Repeat((byte)0x0, 4).ToArray()));

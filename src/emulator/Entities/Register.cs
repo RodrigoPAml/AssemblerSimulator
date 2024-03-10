@@ -26,6 +26,12 @@
             Value = value;
         }
 
+        public Register(string name, int value)
+        {
+            Name = name;
+            SetValue(value);    
+        }
+
         /// <summary>
         /// Set register value
         /// </summary>

@@ -354,6 +354,8 @@ namespace AssemblerEmulator
             CheckKeyword(":", Color.HotPink);
 
             CheckKeyword(new Regex("\\s(\\d+)"), Color.Orange);
+            CheckKeyword(new Regex("\\s(\\d+\\.\\d+)"), Color.Orange);
+
             CheckKeyword(new Regex("\\s(0x[0-9A-Fa-f]+)"), Color.HotPink);
             CheckKeyword(new Regex("'(.)'"), Color.Brown);
 
