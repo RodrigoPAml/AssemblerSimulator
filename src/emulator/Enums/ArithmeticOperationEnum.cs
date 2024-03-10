@@ -13,11 +13,11 @@
         MultiplyImmediate, // muli reg1 reg2 integer -> reg1 = reg2 * integer
 
         AddFloat, // addf reg1 reg2 reg3 -> reg1 = reg2 + reg3
-        AddFloatImmediate, // addfi reg1 reg2 integer =-> reg1 = reg2 + integer
+        AddFloatImmediate, // addfi reg1 reg2 float =-> reg1 = reg2 + float
         SubtractFloat, // subf reg1 reg2 reg3 -> reg1 = reg2 - reg3
         DivideFloat, // divf reg1 reg2 reg3 -> reg1 = reg2 / reg3
         MultiplyFloat, // mulf reg1 reg2 reg3 -> reg1 = reg2 * reg3
-        MultiplyFloatImmediate, // mulfi reg1 reg2 integer -> reg1 = reg2 * integer
+        MultiplyFloatImmediate, // mulfi reg1 reg2 float -> reg1 = reg2 * float
 
         SetEqual, // se reg1 reg2 reg3 -> set reg1 as one if reg2 equals reg3 content, else set zero
         SetNotEqual, // sne reg1 reg2 reg3 -> set reg1 as one if reg2 not equals reg3 content, else set zero
