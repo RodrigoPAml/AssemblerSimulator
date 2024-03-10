@@ -143,6 +143,8 @@ syscall
 
 #### register zero 
 Register that stores the zero value
+#### register one 
+Register that stores the one value
 #### registers s0 to s7
 Registers for saved values
 #### regtisters t0 to t9
