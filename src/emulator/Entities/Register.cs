@@ -1,7 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
-
-namespace AssemblerEmulator
+﻿namespace AssemblerEmulator
 {
     /// <summary>
     /// Represents a register
@@ -40,6 +37,14 @@ namespace AssemblerEmulator
         /// <summary>
         /// Set register value
         /// </summary>
+        public void SetValue(float value)
+        {
+            Value = BitConverter.GetBytes(value);
+        }
+
+        /// <summary>
+        /// Set register value
+        /// </summary>
         public void SetValue(byte value)
         {
             Value[0] = value;
@@ -57,9 +62,18 @@ namespace AssemblerEmulator
         /// Get register value in int32 format
         /// </summary>
         /// <returns></returns>
-        public int GetValue()
+        public int GetIntValue()
         {
             return BitConverter.ToInt32(Value);
+        }
+
+        /// <summary>
+        /// Get register value in float format
+        /// </summary>
+        /// <returns></returns>
+        public float GetFloatValue()
+        {
+            return BitConverter.ToSingle(Value);
         }
     }
 }

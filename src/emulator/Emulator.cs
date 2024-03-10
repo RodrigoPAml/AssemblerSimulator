@@ -1,4 +1,6 @@
-﻿namespace AssemblerEmulator
+﻿using System.Globalization;
+
+namespace AssemblerEmulator
 {
     public partial class Emulator
     {
@@ -25,7 +27,7 @@
         /// <summary>
         /// The program counter
         /// </summary>
-        private int ProgramCounter => GetRegister("pc").GetValue();
+        private int ProgramCounter => GetRegister("pc").GetIntValue();
 
         /// <summary>
         /// The program counter in hexadecimal format
@@ -33,14 +35,39 @@
         private string ProgramCounterAdrress => $"0x{string.Join("", GetRegister("pc").Value.Select(x => string.Format("{0:X2}", x)))}";
 
         /// <summary>
+        /// Return a copy of the memory
+        /// </summary>
+        /// <returns></returns>
+        public List<byte> GetMemory() => new List<byte>(_memory);
+
+        /// <summary>
+        /// Return a copy of the registers
+        /// </summary>
+        /// <returns></returns>
+        public List<Register> GetRegisters() => _registers.Select(x => new Register(x.Name, x.Value)).ToList();
+
+        /// <summary>
+        /// Return if a register exists
+        /// </summary>
+        private bool RegisterExists(string reg) => _registers.Any(x => x.Name == reg);
+
+        /// <summary>
+        /// Return a register
+        /// </summary>
+        private Register GetRegister(string reg) => _registers.Where(x => x.Name == reg).FirstOrDefault();
+
+        /// <summary>
         /// Callbacks to notify changes in memory and registers, or syscalls
         /// </summary>
-        private OnMemoryChange _onMemoryChange;
-        private OnRegisterChange _onRegisterChange;
-        private OnSyscall _onSyscall;
+        private OnMemoryChange? _onMemoryChange;
+        private OnRegisterChange? _onRegisterChange;
+        private OnSyscall? _onSyscall;
 
-        public Emulator(OnMemoryChange onMemoryChange, OnRegisterChange onRegisterChange, OnSyscall onSyscall)
+        public Emulator(OnMemoryChange? onMemoryChange, OnRegisterChange? onRegisterChange, OnSyscall? onSyscall)
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
             Reset();
 
             _onMemoryChange = onMemoryChange;
@@ -89,6 +116,8 @@
             _registers.Add(new Register("v1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
             _registers.Add(new Register("re", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add(new Register("ref", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+
             _registers.Add(new Register("gp", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("sp", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("ra", Enumerable.Repeat((byte)0x0, 4).ToArray()));
@@ -99,27 +128,19 @@
             _registers.Where(x => x.Name == "gp").First().SetValue(999);
         }
 
-        /// <summary>
-        /// Return a copy of the memory
-        /// </summary>
-        /// <returns></returns>
-        public List<byte> GetMemory() => new List<byte>(_memory);
+        public void SetCallbacks(OnMemoryChange? onMemoryChange, OnRegisterChange? onRegisterChange, OnSyscall? onSyscall)
+        {
+            _onMemoryChange = onMemoryChange;
+            _onRegisterChange = onRegisterChange;
+            _onSyscall = onSyscall;
+        }
 
-        /// <summary>
-        /// Return a copy of the registers
-        /// </summary>
-        /// <returns></returns>
-        public List<Register> GetRegisters() => _registers.Select(x => new Register(x.Name, x.Value)).ToList();
-
-        /// <summary>
-        /// Return if a register exists
-        /// </summary>
-        private bool RegisterExists(string reg) => _registers.Any(x => x.Name == reg);
-
-        /// <summary>
-        /// Return a register
-        /// </summary>
-        private Register GetRegister(string reg) => _registers.Where(x => x.Name == reg).FirstOrDefault();
+        public void RemoveCallbacks()
+        {
+            _onMemoryChange = null;
+            _onRegisterChange = null;
+            _onSyscall = null;
+        }
 
         /// <summary>
         /// Execute one instruction
@@ -149,20 +170,68 @@
                 case "add":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Add);
                     break;
+                case "addf":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.AddFloat);
+                    break;
                 case "addi":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.AddImmediate);
+                    break;
+                case "addfi":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.AddFloatImmediate);
                     break;
                 case "sub":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Subtract);
                     break;
+                case "subf":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.SubtractFloat);
+                    break;
                 case "mul":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Multiply);
+                    break;
+                case "mulf":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.MultiplyFloat);
                     break;
                 case "muli":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.MultiplyImmediate);
                     break;
+                case "mulfi":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.MultiplyFloatImmediate);
+                    break;
                 case "div":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Divide);
+                    break;
+                case "divf":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.DivideFloat);
+                    break;
+                case "se":
+                    Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetEqual);
+                    break;
+                case "sne":
+                    Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetNotEqual);
+                    break;
+                case "slt":
+                    Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetLessThan);
+                    break;
+                case "sgt":
+                    Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetGreaterThan);
+                    break;
+                case "slte":
+                    Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetLessThanOrEqual);
+                    break;
+                case "sgte":
+                    Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetGreaterThanOrEqual);
+                    break;
+                case "sltf":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.SetLessThanFloat);
+                    break;
+                case "sgtf":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.SetGreaterThanFloat);
+                    break;
+                case "sltof":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.SetLessThanOrEqualFloat);
+                    break;
+                case "sgtef":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.SetGreaterThanOrEqualFloat);
                     break;
                 case "and":
                     Logic(registerD, registerL, registerR, LogicOperationEnum.And);
@@ -183,10 +252,10 @@
                     Logic(registerD, registerL, registerR, LogicOperationEnum.ShiftRight);
                     break;
                 case "lw":
-                    Memory(registerD, registerL, registerR, MemoryOperationEnum.Load);
+                    Memory(registerD, registerL, registerR, MemoryOperationEnum.LoadWord);
                     break;
                 case "sw":
-                    Memory(registerD, registerL, registerR, MemoryOperationEnum.Store);
+                    Memory(registerD, registerL, registerR, MemoryOperationEnum.StoreWord);
                     break;
                 case "lb":
                     Memory(registerD, registerL, registerR, MemoryOperationEnum.LoadByte);
@@ -196,6 +265,24 @@
                     break;
                 case "move":
                     Memory(registerD, registerL, registerR, MemoryOperationEnum.Move);
+                    break;
+                case "lcr":
+                    Memory(registerD, registerL, registerR, MemoryOperationEnum.LoadCharRegister);
+                    break;
+                case "lbr":
+                    Memory(registerD, registerL, registerR, MemoryOperationEnum.LoadByteRegister);
+                    break;
+                case "lfr":
+                    Memory(registerD, registerL, registerR, MemoryOperationEnum.LoadFloatRegister);
+                    break;
+                case "lir":
+                    Memory(registerD, registerL, registerR, MemoryOperationEnum.LoadIntRegister);
+                    break;
+                case "cfi":
+                    Memory(registerD, registerL, registerR, MemoryOperationEnum.ConvertFloatInt);
+                    break;
+                case "cif":
+                    Memory(registerD, registerL, registerR, MemoryOperationEnum.ConvertIntFloat);
                     break;
                 case "j":
                     changedPc = ControlFlow(registerD, registerL, registerR, ControlFlowOperationEnum.Jump);
@@ -211,13 +298,7 @@
                     break;
                 case "bne":
                     changedPc = ControlFlow(registerD, registerL, registerR, ControlFlowOperationEnum.BranchNotEqual);
-                    break;
-                case "slt":
-                    ControlFlow(registerD, registerL, registerR, ControlFlowOperationEnum.SetLessThan);
-                    break;
-                case "sgt":
-                    ControlFlow(registerD, registerL, registerR, ControlFlowOperationEnum.SetGreaterThan);
-                    break;
+                    break;             
                 case "syscall":
                     if (parts.Count != 1)
                         throw new Exception("Invalid syscall format");
@@ -252,7 +333,7 @@
                 return;
 
             if(instruction.Trim().EndsWith(":") && instruction.Trim().Count() >= 2)
-                _labels.Add(instruction, _instructions.Count-1);
+                _labels.Add(instruction.Trim(), _instructions.Count-1);
             else if(instruction.Trim().Count() > 0)
                 _instructions.Add(instruction);
         }
@@ -265,6 +346,181 @@
         {
             foreach (string instruction in instructions)
                 AddInstruction(instruction);
+        }
+
+        /// <summary>
+        /// Validate all instructions
+        /// </summary>
+        public void ValidateInstructions()
+        {
+            var pc = GetRegister("pc");
+            foreach (string instruction in _instructions)
+            {
+                ValidateInstruction(instruction);
+                pc.SetValue(pc.GetIntValue() + 1);
+            }
+
+            pc.SetValue(0);
+        }
+
+        /// <summary>
+        /// Validate a instruction
+        /// </summary>
+        /// <param name="instruction"></param>
+        /// <exception cref="Exception"></exception>
+        private void ValidateInstruction(string instruction)
+        {
+            List<string> parts = instruction.Split(' ').Where(x => x.Length > 0).ToList();
+
+            if (parts.Count() < 1 || parts.Count > 4)
+                throw new Exception($"Invalid instruction: {instruction}");
+
+            string operation = parts[0];
+            string registerD = parts.Count() > 1 ? parts[1] : string.Empty;
+            string registerL = parts.Count() > 2 ? parts[2] : string.Empty;
+            string registerR = parts.Count() > 3 ? parts[3] : string.Empty;
+
+            switch (operation)
+            {
+                case "add":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Add);
+                    break;
+                case "addf":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.AddFloat);
+                    break;
+                case "addi":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.AddImmediate);
+                    break;
+                case "addfi":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.AddFloatImmediate);
+                    break;
+                case "sub":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Subtract);
+                    break;
+                case "subf":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SubtractFloat);
+                    break;
+                case "mul":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Multiply);
+                    break;
+                case "mulf":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.MultiplyFloat);
+                    break;
+                case "muli":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.MultiplyImmediate);
+                    break;
+                case "mulfi":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.MultiplyFloatImmediate);
+                    break;
+                case "div":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Divide);
+                    break;
+                case "divf":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.DivideFloat);
+                    break;
+                case "se":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetEqual);
+                    break;
+                case "sne":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetNotEqual);
+                    break;
+                case "slt":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetLessThan);
+                    break;
+                case "sgt":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetGreaterThan);
+                    break;
+                case "slte":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetLessThanOrEqual);
+                    break;
+                case "sgte":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetGreaterThanOrEqual);
+                    break;
+                case "sltf":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetLessThanFloat);
+                    break;
+                case "sgtf":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetGreaterThanFloat);
+                    break;
+                case "sltof":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetLessThanOrEqualFloat);
+                    break;
+                case "sgtef":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetGreaterThanOrEqualFloat);
+                    break;
+                case "and":
+                    ValidateLogic(registerD, registerL, registerR, LogicOperationEnum.And);
+                    break;
+                case "or":
+                    ValidateLogic(registerD, registerL, registerR, LogicOperationEnum.Or);
+                    break;
+                case "xor":
+                    ValidateLogic(registerD, registerL, registerR, LogicOperationEnum.Xor);
+                    break;
+                case "not":
+                    ValidateLogic(registerD, registerL, registerR, LogicOperationEnum.Not);
+                    break;
+                case "sfl":
+                    ValidateLogic(registerD, registerL, registerR, LogicOperationEnum.ShiftLeft);
+                    break;
+                case "sfr":
+                    ValidateLogic(registerD, registerL, registerR, LogicOperationEnum.ShiftRight);
+                    break;
+                case "lw":
+                    ValidateMemoryType1(registerD, registerL, registerR, MemoryOperationEnum.LoadWord);
+                    break;
+                case "sw":
+                    ValidateMemoryType1(registerD, registerL, registerR, MemoryOperationEnum.StoreWord);
+                    break;
+                case "lb":
+                    ValidateMemoryType1(registerD, registerL, registerR, MemoryOperationEnum.LoadByte);
+                    break;
+                case "sb":
+                    ValidateMemoryType1(registerD, registerL, registerR, MemoryOperationEnum.StoreByte);
+                    break;
+                case "lcr":
+                    ValidateMemoryType2(registerD, registerL, registerR, MemoryOperationEnum.LoadCharRegister);
+                    break;
+                case "lbr":
+                    ValidateMemoryType2(registerD, registerL, registerR, MemoryOperationEnum.LoadByteRegister);
+                    break;
+                case "lfr":
+                    ValidateMemoryType2(registerD, registerL, registerR, MemoryOperationEnum.LoadFloatRegister);
+                    break;
+                case "lir":
+                    ValidateMemoryType2(registerD, registerL, registerR, MemoryOperationEnum.LoadIntRegister);
+                    break;
+                case "cfi":
+                    ValidateMemoryType3(registerD, registerL, registerR, MemoryOperationEnum.ConvertFloatInt);
+                    break;
+                case "cif":
+                    ValidateMemoryType3(registerD, registerL, registerR, MemoryOperationEnum.ConvertIntFloat);
+                    break;
+                case "move":
+                    ValidateMemoryType3(registerD, registerL, registerR, MemoryOperationEnum.Move);
+                    break;
+                case "j":
+                    ValidadeControlFlowType1(registerD, registerL, registerR, ControlFlowOperationEnum.Jump);
+                    break;
+                case "jal":
+                    ValidadeControlFlowType1(registerD, registerL, registerR, ControlFlowOperationEnum.JumpAndLink);
+                    break;
+                case "jr":
+                    ValidadeControlFlowType2(registerD, registerL, registerR, ControlFlowOperationEnum.JumpRegister);
+                    break;
+                case "beq":
+                    ValidadeControlFlowType3(registerD, registerL, registerR, ControlFlowOperationEnum.BranchEqual);
+                    break;
+                case "bne":
+                    ValidadeControlFlowType3(registerD, registerL, registerR, ControlFlowOperationEnum.BranchNotEqual);
+                    break;
+                case "syscall":
+                    if (parts.Count != 1)
+                        throw new Exception("Invalid syscall format");
+                    break;
+                default:
+                    throw new Exception($"Invalid instruction: {instruction}");
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
+using Microsoft.Win32;
+using System.Collections;
+using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
 namespace AssemblerEmulator
@@ -31,6 +33,11 @@ namespace AssemblerEmulator
         /// </summary>
         private bool _hasChanged = false;
 
+        /// <summary>
+        /// Enable logs from the emulator
+        /// </summary>
+        private bool enableLogs = true;
+
         public Form()
         {
             _form = this;
@@ -61,6 +68,8 @@ namespace AssemblerEmulator
 
                 item.SubItems[1].Text = $"0x{str}";
                 item.SubItems[2].Text = BitConverter.ToInt32(value).ToString();
+                item.SubItems[3].Text = BitConverter.ToSingle(value).ToString();
+                item.SubItems[4].Text = Encoding.ASCII.GetString(value);
             }
         }
 
@@ -72,8 +81,19 @@ namespace AssemblerEmulator
             if(code == 1)
             {
                 int integer = BitConverter.ToInt32(value);
+                _form.textBoxOutput.AppendText(integer.ToString());
+            }
+            else if(code == 2)
+            {
+                var fl = BitConverter.ToSingle(value);
+                _form.textBoxOutput.AppendText(fl.ToString());
+            }
+            else if (code == 3)
+            {
+                var fl = Encoding.ASCII.GetString(new byte[] { value[0] });
+                fl = fl.Replace("\n", Environment.NewLine);
 
-                _form.listBoxOutput.Items.Add(integer.ToString());  
+                _form.textBoxOutput.AppendText(fl);
             }
         }
 
@@ -87,6 +107,7 @@ namespace AssemblerEmulator
             if (item != null)
             {
                 item.SubItems[1].Text = $"0x{value.ToString("x2")}";
+                item.SubItems[2].Text = Encoding.ASCII.GetString(new byte[] { value });
             }
         }
 
@@ -159,9 +180,11 @@ namespace AssemblerEmulator
             listViewRegisters.Items.Clear();
             listViewRegisters.Columns.Clear();
             listViewRegisters.View = View.Details;
-            listViewRegisters.Columns.Add("Register", 50);
-            listViewRegisters.Columns.Add("Value (Hex)", 80);
-            listViewRegisters.Columns.Add("Value (Dec)", 70);
+            listViewRegisters.Columns.Add("Register", 70);
+            listViewRegisters.Columns.Add("Value (Hex)", 100);
+            listViewRegisters.Columns.Add("Value (Int)", 100);
+            listViewRegisters.Columns.Add("Value (Float)", 100);
+            listViewRegisters.Columns.Add("Value (String)", 100);
 
             foreach (var register in registers)
             {
@@ -170,7 +193,9 @@ namespace AssemblerEmulator
                 var value = string.Join("", register.Value.Select(x => string.Format("{0:X2}", x)));
 
                 item.SubItems.Add($"0x{value}");
-                item.SubItems.Add(BitConverter.ToInt32(register.Value).ToString());
+                item.SubItems.Add(register.GetIntValue().ToString());
+                item.SubItems.Add(register.GetFloatValue().ToString());
+                item.SubItems.Add(Encoding.ASCII.GetString(register.Value));
 
                 listViewRegisters.Items.Add(item);
             }
@@ -187,7 +212,8 @@ namespace AssemblerEmulator
             listViewMemory.Columns.Clear();
             listViewMemory.View = View.Details;
             listViewMemory.Columns.Add("Address", 100);
-            listViewMemory.Columns.Add("Value", 100);
+            listViewMemory.Columns.Add("Value (Hex)", 100);
+            listViewMemory.Columns.Add("Value (String)", 100);
 
             int address = 0;
             foreach(var _byte in mem)
@@ -196,6 +222,7 @@ namespace AssemblerEmulator
                 address++;
 
                 item.SubItems.Add($"0x{_byte.ToString("x2")}");
+                item.SubItems.Add(Encoding.ASCII.GetString(new byte[] { _byte }));
 
                 listViewMemory.Items.Add(item);
             }
@@ -211,6 +238,7 @@ namespace AssemblerEmulator
             PopulateInstructionsView();
             PopulateRegistersView();
             listBoxOutput.Items.Clear();
+            textBoxOutput.Text = string.Empty;
         }
 
         /// <summary>
@@ -227,14 +255,18 @@ namespace AssemblerEmulator
 
                 listBoxOutput.Items.Clear();
                 listBoxOutput.Items.Add("Running");
+                textBoxOutput.Text = string.Empty;
 
                 var instuctions = richTextBoxCode.Text.Split('\n').ToList();
 
+                DateTime startTime = DateTime.Now;
+
                 _emulator.AddInstructions(instuctions);
+                _emulator.ValidateInstructions();
 
                 while (_emulator.ExecuteLine()) { }
 
-                listBoxOutput.Items.Add("Finished");
+                listBoxOutput.Items.Add($"Finished in {(DateTime.Now-startTime).TotalMilliseconds} ms");
             }
             catch (Exception ex)
             {
@@ -262,11 +294,17 @@ namespace AssemblerEmulator
             this.richTextBoxCode.SuspendLayout();
 
             CheckKeyword("add", Color.Green);
+            CheckKeyword("addf", Color.Green);
             CheckKeyword("addi", Color.Green);
+            CheckKeyword("addfi", Color.Green);
             CheckKeyword("sub", Color.Green);
+            CheckKeyword("subf", Color.Green);
             CheckKeyword("mul", Color.Green);
+            CheckKeyword("mulf", Color.Green);
             CheckKeyword("muli", Color.Green);
+            CheckKeyword("mulfi", Color.Green);
             CheckKeyword("div", Color.Green);
+            CheckKeyword("divf", Color.Green);
 
             CheckKeyword("or", Color.Green);
             CheckKeyword("xor", Color.Green);
@@ -280,8 +318,26 @@ namespace AssemblerEmulator
             CheckKeyword("beq", Color.Green);
             CheckKeyword("bne", Color.Green);
             CheckKeyword("jal", Color.Green);
+
+            CheckKeyword("se", Color.Green);
+            CheckKeyword("sne", Color.Green);
             CheckKeyword("slt", Color.Green);
             CheckKeyword("sgt", Color.Green);
+            CheckKeyword("slte", Color.Green);
+            CheckKeyword("sgte", Color.Green);
+            CheckKeyword("sltf", Color.Green);
+            CheckKeyword("sgtf", Color.Green);
+            CheckKeyword("sltof", Color.Green);
+            CheckKeyword("sgtef", Color.Green);
+            CheckKeyword("slt", Color.Green);
+            CheckKeyword("sgt", Color.Green);
+
+            CheckKeyword("lbr", Color.Green);
+            CheckKeyword("lcr", Color.Green);
+            CheckKeyword("lir", Color.Green);
+            CheckKeyword("lfr", Color.Green);
+            CheckKeyword("cfi", Color.Green);
+            CheckKeyword("cif", Color.Green);
 
             CheckKeyword("lw", Color.Green);
             CheckKeyword("sw", Color.Green);
@@ -289,16 +345,18 @@ namespace AssemblerEmulator
             CheckKeyword("lb", Color.Green);
             CheckKeyword("move", Color.Green);
 
-            CheckKeyword("syscall", Color.Orange);
+            CheckKeyword("syscall", Color.HotPink);
 
             foreach (var register in _emulator.GetRegisters())
                 CheckKeyword(register.Name, Color.Blue);
 
             CheckKeyword(new Regex(".*--.*"), Color.DarkGreen);
-
-            CheckKeyword("0x", Color.Red);
             CheckKeyword(":", Color.HotPink);
-        
+
+            CheckKeyword(new Regex("\\s(\\d+)"), Color.Orange);
+            CheckKeyword(new Regex("\\s(0x[0-9A-Fa-f]+)"), Color.HotPink);
+            CheckKeyword(new Regex("'(.)'"), Color.Brown);
+
             this.richTextBoxCode.ResumeLayout();
 
             _hasChanged = false;
@@ -386,6 +444,23 @@ namespace AssemblerEmulator
 
                 File.WriteAllText(path, richTextBoxCode.Text);
                 MessageBox.Show("Saved with success");
+            }
+        }
+
+        private void ButtonLog_Click(object sender, EventArgs e)
+        {
+            if (enableLogs)
+            {
+                enableLogs = false;
+                btnLog.Text = "Enable Feedback (Performance -)";
+                _emulator.SetCallbacks(null, null, null);
+            }
+            else
+            {
+                enableLogs = true;
+
+                _emulator.SetCallbacks(OnMemoryChange, OnRegisterChange, OnSyscall);
+                btnLog.Text = "Disable Feedback (Performance +)";
             }
         }
     }

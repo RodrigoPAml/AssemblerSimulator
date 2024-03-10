@@ -7,39 +7,27 @@
         /// </summary>
         private void Logic(string registerD, string registerL, string registerR, LogicOperationEnum op)
         {
-            if (!RegisterExists(registerD))
-                throw new Exception($"Invalid register {registerD} at address {ProgramCounterAdrress}");
-
-            if (!RegisterExists(registerL))
-                throw new Exception($"Invalid register {registerL} at address {ProgramCounterAdrress}");
-
-            if (!RegisterExists(registerR) && op != LogicOperationEnum.Not)
-                throw new Exception($"Invalid register {registerR} at address {ProgramCounterAdrress}");
-  
-            int value = 0;
+            byte[] value = null;
 
             switch(op)
             {
                 case LogicOperationEnum.And:
-                    value = BitConverter.ToInt32(GetRegister(registerL).Value) & BitConverter.ToInt32(GetRegister(registerR).Value);
+                    value = ByteAnd(GetRegister(registerL).Value, GetRegister(registerR).Value);
                     break;
                 case LogicOperationEnum.Or:
-                    value = BitConverter.ToInt32(GetRegister(registerL).Value) | BitConverter.ToInt32(GetRegister(registerR).Value);
+                    value = ByteOr(GetRegister(registerL).Value, GetRegister(registerR).Value);
                     break;
                 case LogicOperationEnum.Xor:
-                    value = BitConverter.ToInt32(GetRegister(registerL).Value) ^ BitConverter.ToInt32(GetRegister(registerR).Value);
+                    value = ByteXor(GetRegister(registerL).Value, GetRegister(registerR).Value);
                     break;
                 case LogicOperationEnum.ShiftLeft:
-                    value = BitConverter.ToInt32(GetRegister(registerL).Value) << BitConverter.ToInt32(GetRegister(registerR).Value);
+                    value = ByteShiftLeft(GetRegister(registerL).Value, GetRegister(registerR).GetIntValue());
                     break;
                 case LogicOperationEnum.ShiftRight:
-                    value = BitConverter.ToInt32(GetRegister(registerL).Value) >> BitConverter.ToInt32(GetRegister(registerR).Value);
-                    break;
+                    value = ByteShiftRight(GetRegister(registerL).Value, GetRegister(registerR).GetIntValue());
+                    break; 
                 case LogicOperationEnum.Not:
-                    if(!string.IsNullOrEmpty(registerR))
-                        throw new Exception($"registerR {registerR} not expected in not instruct at address {ProgramCounterAdrress}");
-
-                    value = ~BitConverter.ToInt32(GetRegister(registerL).Value);
+                    value = ByteNot(GetRegister(registerL).Value);
                     break;
             }
 
@@ -49,6 +37,60 @@
 
             if (_onRegisterChange != null)
                 _onRegisterChange(registerD, regD.Value);
+        }
+
+        private byte[] ByteAnd(byte[] arr1, byte[] arr2)
+        {
+            byte[] result = new byte[arr1.Length];
+            for (int i = 0; i < arr1.Length; i++)
+                result[i] = (byte)(arr1[i] & arr2[i]);
+
+            return result;
+        }
+
+        private byte[] ByteOr(byte[] arr1, byte[] arr2)
+        {
+            byte[] result = new byte[arr1.Length];
+            for (int i = 0; i < arr1.Length; i++)
+                result[i] = (byte)(arr1[i] | arr2[i]);
+
+            return result;
+        }
+
+        private byte[] ByteXor(byte[] arr1, byte[] arr2)
+        {
+            byte[] result = new byte[arr1.Length];
+            for (int i = 0; i < arr1.Length; i++)
+                result[i] = (byte)(arr1[i] ^ arr2[i]);
+
+            return result;
+        }
+
+        private byte[] ByteNot(byte[] arr)
+        {
+            byte[] result = new byte[arr.Length];
+            for (int i = 0; i < arr.Length; i++)
+                result[i] = (byte)(~arr[i]);
+
+            return result;
+        }
+
+        private byte[] ByteShiftLeft(byte[] arr, int n)
+        {
+            byte[] result = new byte[arr.Length];
+            for (int i = 0; i < arr.Length; i++)
+                result[i] = (byte)(arr[i] << n);
+
+            return result;
+        }
+
+        private byte[] ByteShiftRight(byte[] arr, int n)
+        {
+            byte[] result = new byte[arr.Length];
+            for (int i = 0; i < arr.Length; i++)
+                result[i] = (byte)(arr[i] >> n);
+
+            return result;
         }
     }
 }

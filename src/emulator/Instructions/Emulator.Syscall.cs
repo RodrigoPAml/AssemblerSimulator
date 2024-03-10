@@ -7,9 +7,9 @@
         /// </summary>
         private void Syscall()
         {
-            int syscallCode = _registers.Where(x => x.Name == "v0").First().GetValue();
+            int syscallCode = _registers.Where(x => x.Name == "v0").First().GetIntValue();
 
-            if (syscallCode != 1)
+            if (syscallCode < 1 && syscallCode > 3)
                 throw new Exception($"Unknow syscall code at v0 at address at address {ProgramCounterAdrress}");
 
             if (_onSyscall != null)
