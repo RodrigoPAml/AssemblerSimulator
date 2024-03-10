@@ -7,20 +7,19 @@ The program uses windows form for the user interface part
 - With code editor to load an save asm files and add code comments
 - Option to run the code, reset the simulator and see output
 - View of the program memory and instruction memory
-- View of the registers and address that labels point
+- View of the registers and address that labels refers to
 - 32 bits registers implemented
 - Address is oriented in byte (8 bits)
-- Syscall for output
+- Syscall for output of char, integers and floats
+- You can disable the emulator feed (GUI, callbacks, etc) to have max performance
 
-![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/3b1a2ad0-bbe5-4513-99cc-2fc52398139f)
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/ac2505b2-7e64-4d98-9922-4692665b86ea)
 
 # Views
 
 ## Instructions memory
 
-Show the instructions with address
-
-![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/f397f439-6f3e-4c72-9470-70f5a0c82c10)
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/596b4b4c-cce3-47d4-b3a7-452ba675a2fd)
 
 ## Labels View
 
@@ -30,21 +29,21 @@ Show the labels poiting addresses
 
 ## Memory View
 
-Show program memory per byte
+Show program memory per byte or char
 
-![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/aa426e56-bcaf-4992-b86e-20fb6bfaf522)
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/aae590fe-fefb-4bee-837e-34a204a9daf6)
 
 ## Registers View
 
 Show registers values
 
-![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/ade239a1-21da-4b71-815e-42d2e1d1f901)
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/6b45463e-2837-420f-8c98-64e3a09c8a10)
 
 ## Code and output view
 
 Show the code with options in the top and output
 
-![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/d4756665-8869-4274-82b2-cf1480796539)
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/83d4e1ce-e361-4b66-bd18-9d3d02f4f3e8)
 
 # Implemented instructions
 
@@ -55,12 +54,32 @@ List of implementes instructions from MIPS
 Instructions to do arithmetic operations
 
 ```asm
-add t0 t1 t2
-addi t0 t1 10
-sub t0 t1 t2
-div t0 t1 t2
-mul t0 t1 t2
-muli t0 t1 t2
+add reg1 reg2 reg3 ; reg1 = reg2 + reg3
+addi reg1 reg2 integer ; reg1 = reg2 + integer
+sub reg1 reg2 reg3 ; reg1 = reg2 - reg3
+div reg1 reg2 reg3 ; reg1 = reg2 / reg3
+mul reg1 reg2 reg3 ; reg1 = reg2 * reg3
+muli reg1 reg2 integer ; reg1 = reg2 * integer
+
+addf reg1 reg2 reg3 ; reg1 = reg2 + reg3
+addfi reg1 reg2 float ; reg1 = reg2 + float
+subf reg1 reg2 reg3 ; reg1 = reg2 - reg3
+divf reg1 reg2 reg3 ; reg1 = reg2 / reg3
+mulf reg1 reg2 reg3 ; reg1 = reg2 * reg3
+mulfi reg1 reg2 float ; reg1 = reg2 * float
+
+se reg1 reg2 reg3 ; set reg1 as one if reg2 equals reg3 content, else set zero
+sne reg1 reg2 reg3 ; set reg1 as one if reg2 not equals reg3 content, else set zero
+
+slt reg1 reg2 reg3 ; set reg1 as one if reg1 < reg2 (int comparision) else set zero
+sgt reg1 reg2 reg3 ; set reg1 as one if reg1 > reg2 (int comparision) else set zero
+slte reg1 reg2 reg3 ; set reg1 as one if reg1 <= reg2 (int comparision) else set zero
+sgte reg1 reg2 reg3 ; set reg1 as one if reg1 >= reg2 (int comparision) else set zero
+
+sltf reg1 reg2 reg3 ; set reg1 as one if reg1 < reg2 (float comparision) else set zero
+sgtf reg1 reg2 reg3 ; set reg1 as one if reg1 > reg2 (float comparision) else set zero
+sltef reg1 reg2 reg3 ; set reg1 as one if reg1 <= reg2 (float comparision) else set zero
+sgtef reg1 reg2 reg3 ; set reg1 as one if reg1 >= reg2 (float comparision) else set zero
 ```
 
 ## Logic
@@ -70,12 +89,12 @@ Instructios to do logic operations
 sfl is shift left and sfr is shift right
 
 ```asm
-and t1 t2 t3
-or t1 t2 t3
-xor t1 t2 t3
-not t1 t2
-sfl t1 t2 t3
-sfr t1 t2 t3
+and reg1 reg2 reg3 ; reg1 = reg2 & reg3
+xor reg1 reg2 reg3 ; reg1 = reg2 ^ reg3
+or reg1 reg2 reg3 ; reg1 = reg2 | reg3
+sfl reg1 reg2 reg3 ; reg1 = reg2 << reg3
+sfr reg1 reg2 reg3 ; reg1 = reg2 >> reg3
+not reg1 reg2 ; reg1 = ~reg2
 ```
 
 ## Flow Control
@@ -83,13 +102,11 @@ sfr t1 t2 t3
 Instructions to control program flow
 
 ```asm
-j label
-jal label
-jr t0
-beq t0 t1 label
-bne t0 t1 label
-slt t0 t1 t2
-sgt t0 t1 t2
+j label ; go to instruction at address of label
+jal label ; go to instruction at address of label, and save previous address+1 at ra
+jr register ; go to instruction at address contained in register
+beq reg1 reg2 label ; if reg1 and reg2 are same bytes go to address of label
+beq reg1 reg2 label ; if reg1 and reg2 are same bytes go to address of label
 ```
 
 ## Memory
@@ -97,16 +114,24 @@ sgt t0 t1 t2
 Instructions to control program memory
 
 ```asm
-move t0 t1
-lw t0 10 t1
-sw t0 10 t1
-lb t0 10 t1
-sb t0 10 t1
+lw reg1 integer reg2 -> reg1 = memory[reg2 + integer]
+sw reg1 integer reg2 -> memory[reg2 + integer] = reg1
+lb reg1 integer reg2 -> reg1 = memory[reg2 + integer]
+sb reg1 integer reg2 -> memory[reg2 + integer] = reg1
+
+lbr reg1 hex_value -> load hex_value into reg1
+lcr reg1 char(ASCII) -> load char into reg1
+lir reg1 integer -> load integer into reg1
+lfr reg1 float -> load float into reg1
+
+move reg1 reg2 -> reg1 = reg2
+cfi reg1 reg2 -> reg1 = (float)reg2
+cif reg1 reg2 -> reg1 = (int)reg2
 ```
 
 ## Syscall
 
-Syscall for output integer (number 1) is implemented
+Syscall for output integer (number 1), float(number2), char(number3) 
 
 ```asm
 addi v0 v0 1
@@ -127,7 +152,9 @@ Arguments registers
 #### regtisters v0 to v1
 Returned values registers
 #### register ve
-Register that store the rest of some division
+Register that store the rest of some integer division
+#### register vef
+Register that store the rest of some float division
 #### register gp and sp
 Heap and stack pointer
 #### register ra
@@ -141,17 +168,21 @@ Program counter register
 
 A program that outputs n numbers from fibonnaci sequence
 
-![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/1a34c950-937f-4338-88cf-a07f0e1f05f5)
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/17ea12e0-c983-4b32-a631-de503fd8ff36)
 
 ## Even number in the stack
 
-A program that output n even numbers and also save it in the stack
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/5e15857e-c566-444b-a155-13d6711ca029)
 
-![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/26466a16-1bfe-4b34-a0b1-bcf987e00bfc)
+## ASCII
+A program that print some ascii chars
 
-A print of the stack with the value 100 on top of it (0x00000064)
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/e58c5218-72f9-4b5f-a75d-97334d27ef8a)
 
-![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/2f5f895d-30b4-455a-9a07-433f47bc82c2)
+## Float
+A program that do a float sum and print it
+
+![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/765d3e38-7590-49df-91eb-a1fae3657782)
 
 
 
