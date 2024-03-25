@@ -114,19 +114,19 @@ beq reg1 reg2 label ; if reg1 and reg2 are same bytes go to address of label
 Instructions to control program memory
 
 ```asm
-lw reg1 integer reg2 -> reg1 = memory[reg2 + integer]
-sw reg1 integer reg2 -> memory[reg2 + integer] = reg1
-lb reg1 integer reg2 -> reg1 = memory[reg2 + integer]
-sb reg1 integer reg2 -> memory[reg2 + integer] = reg1
+lw reg1 integer reg2 ; reg1 = memory[reg2 + integer]
+sw reg1 integer reg2 ; memory[reg2 + integer] = reg1
+lb reg1 integer reg2 ; reg1 = memory[reg2 + integer]
+sb reg1 integer reg2 ; memory[reg2 + integer] = reg1
 
-lbr reg1 hex_value -> load hex_value into reg1
-lcr reg1 char(ASCII) -> load char into reg1
-lir reg1 integer -> load integer into reg1
-lfr reg1 float -> load float into reg1
+lbr reg1 hex_value ; load hex_value into reg1
+lcr reg1 char(ASCII) ; load char into reg1
+lir reg1 integer ; load integer into reg1
+lfr reg1 float ; load float into reg1
 
-move reg1 reg2 -> reg1 = reg2
-cfi reg1 reg2 -> reg1 = (float)reg2
-cif reg1 reg2 -> reg1 = (int)reg2
+move reg1 reg2 ; reg1 = reg2
+cfi reg1 reg2 ; reg1 = (float)reg2
+cif reg1 reg2 ; reg1 = (int)reg2
 ```
 
 ## Syscall
