@@ -38,8 +38,14 @@
                 case ArithmeticOperationEnum.AddImmediate:
                     value = GetRegister(registerL).GetIntValue() + int.Parse(registerR);
                     break;
+                case ArithmeticOperationEnum.SubtractImmediate:
+                    value = GetRegister(registerL).GetIntValue() - int.Parse(registerR);
+                    break;
                 case ArithmeticOperationEnum.MultiplyImmediate:
                     value = GetRegister(registerL).GetIntValue() * int.Parse(registerR);
+                    break;
+                case ArithmeticOperationEnum.DivideImmediate:
+                    value = GetRegister(registerL).GetIntValue() / int.Parse(registerR);
                     break;
                 case ArithmeticOperationEnum.SetEqual:
                     value = GetRegister(registerD).Value.SequenceEqual(GetRegister(registerL).Value)
@@ -117,8 +123,14 @@
                 case ArithmeticOperationEnum.AddFloatImmediate:
                     value = GetRegister(registerL).GetFloatValue() + float.Parse(registerR);
                     break;
+                case ArithmeticOperationEnum.SubtractFloatImmediate:
+                    value = GetRegister(registerL).GetFloatValue() - float.Parse(registerR);
+                    break;
                 case ArithmeticOperationEnum.MultiplyFloatImmediate:
                     value = GetRegister(registerL).GetFloatValue() * float.Parse(registerR);
+                    break;
+                case ArithmeticOperationEnum.DivideFloatImmediate:
+                    value = GetRegister(registerL).GetFloatValue() / float.Parse(registerR);
                     break;
                 case ArithmeticOperationEnum.SetLessThanFloat:
                     value = GetRegister(registerL).GetFloatValue() > GetRegister(registerR).GetFloatValue()

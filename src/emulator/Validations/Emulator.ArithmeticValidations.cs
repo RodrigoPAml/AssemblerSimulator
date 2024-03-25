@@ -38,6 +38,8 @@
                     break;
                 case ArithmeticOperationEnum.AddImmediate:
                 case ArithmeticOperationEnum.MultiplyImmediate:
+                case ArithmeticOperationEnum.DivideImmediate:
+                case ArithmeticOperationEnum.SubtractImmediate:
                     {
                         bool isValid = false;
 
@@ -50,6 +52,8 @@
                     break;
                 case ArithmeticOperationEnum.AddFloatImmediate:
                 case ArithmeticOperationEnum.MultiplyFloatImmediate:
+                case ArithmeticOperationEnum.SubtractFloatImmediate:
+                case ArithmeticOperationEnum.DivideFloatImmediate:
                     {
                         bool isValid = false;
 

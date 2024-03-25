@@ -183,8 +183,14 @@ namespace AssemblerEmulator
                 case "sub":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Subtract);
                     break;
+                case "subi":
+                    Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SubtractImmediate);
+                    break;
                 case "subf":
                     ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.SubtractFloat);
+                    break;
+                case "subfi":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.SubtractFloatImmediate);
                     break;
                 case "mul":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Multiply);
@@ -201,8 +207,14 @@ namespace AssemblerEmulator
                 case "div":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Divide);
                     break;
+                case "divi":
+                    Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.DivideImmediate);
+                    break;
                 case "divf":
                     ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.DivideFloat);
+                    break;
+                case "divfi":
+                    ArithmeticFloat(registerD, registerL, registerR, ArithmeticOperationEnum.DivideFloatImmediate);
                     break;
                 case "se":
                     Arithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetEqual);
@@ -398,8 +410,14 @@ namespace AssemblerEmulator
                 case "sub":
                     ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Subtract);
                     break;
+                case "subi":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SubtractImmediate);
+                    break;
                 case "subf":
                     ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SubtractFloat);
+                    break;
+                case "subfi":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SubtractFloatImmediate);
                     break;
                 case "mul":
                     ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Multiply);
@@ -416,8 +434,14 @@ namespace AssemblerEmulator
                 case "div":
                     ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.Divide);
                     break;
+                case "divi":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.DivideImmediate);
+                    break;
                 case "divf":
                     ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.DivideFloat);
+                    break;
+                case "divfi":
+                    ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.DivideFloatImmediate);
                     break;
                 case "se":
                     ValidateArithmetic(registerD, registerL, registerR, ArithmeticOperationEnum.SetEqual);

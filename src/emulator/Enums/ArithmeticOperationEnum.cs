@@ -8,14 +8,18 @@
         Add, // add reg1 reg2 reg3 -> reg1 = reg2 + reg3
         AddImmediate, // addi reg1 reg2 integer -> reg1 = reg2 + integer
         Subtract, // sub reg1 reg2 reg3 -> reg1 = reg2 - reg3
+        SubtractImmediate, // subi reg1 reg2 integer -> reg1 = reg2 - integer
         Divide, // div reg1 reg2 reg3 -> reg1 = reg2 / reg3
+        DivideImmediate, // divi reg1 reg2 integer -> reg1 = reg2 / integer
         Multiply, // mul reg1 reg2 reg3 -> reg1 = reg2 * reg3
         MultiplyImmediate, // muli reg1 reg2 integer -> reg1 = reg2 * integer
 
         AddFloat, // addf reg1 reg2 reg3 -> reg1 = reg2 + reg3
         AddFloatImmediate, // addfi reg1 reg2 float =-> reg1 = reg2 + float
         SubtractFloat, // subf reg1 reg2 reg3 -> reg1 = reg2 - reg3
+        SubtractFloatImmediate, // subfi reg1 reg2 float -> reg1 = reg2 - float
         DivideFloat, // divf reg1 reg2 reg3 -> reg1 = reg2 / reg3
+        DivideFloatImmediate, // divfi reg1 reg2 float -> reg1 = reg2 / float
         MultiplyFloat, // mulf reg1 reg2 reg3 -> reg1 = reg2 * reg3
         MultiplyFloatImmediate, // mulfi reg1 reg2 float -> reg1 = reg2 * float
 
