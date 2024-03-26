@@ -58,22 +58,22 @@
                           : 0;
                     break;
                 case ArithmeticOperationEnum.SetLessThan:
-                    value = GetRegister(registerL).GetIntValue() > GetRegister(registerR).GetIntValue()
+                    value = GetRegister(registerL).GetIntValue() < GetRegister(registerR).GetIntValue()
                          ? 1
                          : 0;
                     break;
                 case ArithmeticOperationEnum.SetLessThanOrEqual:
-                    value = GetRegister(registerL).GetIntValue() >= GetRegister(registerR).GetIntValue()
+                    value = GetRegister(registerL).GetIntValue() <= GetRegister(registerR).GetIntValue()
                         ? 1
                         : 0;
                     break;
                 case ArithmeticOperationEnum.SetGreaterThan:
-                    value = GetRegister(registerL).GetIntValue() < GetRegister(registerR).GetIntValue() 
+                    value = GetRegister(registerL).GetIntValue() > GetRegister(registerR).GetIntValue() 
                         ? 1
                         : 0;
                     break;
                 case ArithmeticOperationEnum.SetGreaterThanOrEqual:
-                    value = GetRegister(registerL).GetIntValue() <= GetRegister(registerR).GetIntValue() 
+                    value = GetRegister(registerL).GetIntValue() >= GetRegister(registerR).GetIntValue() 
                         ? 1
                         : 0;
                     break;
@@ -133,22 +133,22 @@
                     value = GetRegister(registerL).GetFloatValue() / float.Parse(registerR);
                     break;
                 case ArithmeticOperationEnum.SetLessThanFloat:
-                    value = GetRegister(registerL).GetFloatValue() > GetRegister(registerR).GetFloatValue()
+                    value = GetRegister(registerL).GetFloatValue() < GetRegister(registerR).GetFloatValue()
                         ? 1
                         : 0;
                     break;
                 case ArithmeticOperationEnum.SetLessThanOrEqualFloat:
-                    value = GetRegister(registerL).GetFloatValue() >= GetRegister(registerR).GetFloatValue()
+                    value = GetRegister(registerL).GetFloatValue() <= GetRegister(registerR).GetFloatValue()
                         ? 1
                         : 0;
                     break;
                 case ArithmeticOperationEnum.SetGreaterThanFloat:
-                    value = (int)GetRegister(registerL).GetFloatValue() < GetRegister(registerR).GetFloatValue()
+                    value = (int)GetRegister(registerL).GetFloatValue() > GetRegister(registerR).GetFloatValue()
                         ? 1
                         : 0;
                     break;
                 case ArithmeticOperationEnum.SetGreaterThanOrEqualFloat:
-                    value = GetRegister(registerL).GetFloatValue() <= GetRegister(registerR).GetFloatValue()
+                    value = GetRegister(registerL).GetFloatValue() >= GetRegister(registerR).GetFloatValue()
                         ? 1
                         : 0;
                     break;
