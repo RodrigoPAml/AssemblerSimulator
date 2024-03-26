@@ -71,15 +71,15 @@ mulfi reg1 reg2 float ; reg1 = reg2 * float
 se reg1 reg2 reg3 ; set reg1 as one if reg2 equals reg3 content, else set zero
 sne reg1 reg2 reg3 ; set reg1 as one if reg2 not equals reg3 content, else set zero
 
-slt reg1 reg2 reg3 ; set reg1 as one if reg1 < reg2 (int comparision) else set zero
-sgt reg1 reg2 reg3 ; set reg1 as one if reg1 > reg2 (int comparision) else set zero
-slte reg1 reg2 reg3 ; set reg1 as one if reg1 <= reg2 (int comparision) else set zero
-sgte reg1 reg2 reg3 ; set reg1 as one if reg1 >= reg2 (int comparision) else set zero
+slt reg1 reg2 reg3 ; set reg1 as one if reg2 < reg3 (int comparision) else set zero
+sgt reg1 reg2 reg3 ; set reg1 as one if reg2 > reg3 (int comparision) else set zero
+slte reg1 reg2 reg3 ; set reg1 as one if reg2 <= reg3 (int comparision) else set zero
+sgte reg1 reg2 reg3 ; set reg1 as one if reg2 >= reg3 (int comparision) else set zero
 
-sltf reg1 reg2 reg3 ; set reg1 as one if reg1 < reg2 (float comparision) else set zero
-sgtf reg1 reg2 reg3 ; set reg1 as one if reg1 > reg2 (float comparision) else set zero
-sltef reg1 reg2 reg3 ; set reg1 as one if reg1 <= reg2 (float comparision) else set zero
-sgtef reg1 reg2 reg3 ; set reg1 as one if reg1 >= reg2 (float comparision) else set zero
+sltf reg1 reg2 reg3 ; set reg1 as one if reg2 < reg3 (float comparision) else set zero
+sgtf reg1 reg2 reg3 ; set reg1 as one if reg2 > reg3 (float comparision) else set zero
+sltef reg1 reg2 reg3 ; set reg1 as one if reg2 <= reg3 (float comparision) else set zero
+sgtef reg1 reg2 reg3 ; set reg1 as one if reg2 >= reg3 (float comparision) else set zero
 ```
 
 ## Logic
