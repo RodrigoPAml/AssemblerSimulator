@@ -48,12 +48,12 @@
                     value = GetRegister(registerL).GetIntValue() / int.Parse(registerR);
                     break;
                 case ArithmeticOperationEnum.SetEqual:
-                    value = GetRegister(registerD).Value.SequenceEqual(GetRegister(registerL).Value)
+                    value = GetRegister(registerL).Value.SequenceEqual(GetRegister(registerR).Value)
                         ? 1
                         : 0;
                     break;
                 case ArithmeticOperationEnum.SetNotEqual:
-                    value = !GetRegister(registerD).Value.SequenceEqual(GetRegister(registerL).Value)
+                    value = !GetRegister(registerL).Value.SequenceEqual(GetRegister(registerR).Value)
                           ? 1
                           : 0;
                     break;
