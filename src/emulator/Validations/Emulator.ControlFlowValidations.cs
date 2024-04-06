@@ -46,7 +46,7 @@
             if (!string.IsNullOrEmpty(registerL))
                 throw new Exception($"RegisterL should not be provided at address {ProgramCounterAdrress}");
 
-            if (string.IsNullOrEmpty(registerR))
+            if (!string.IsNullOrEmpty(registerR))
                 throw new Exception($"registerR should not be provided at addres {ProgramCounterAdrress}");
         }
 
