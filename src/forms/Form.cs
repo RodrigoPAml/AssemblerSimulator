@@ -291,6 +291,7 @@ namespace AssemblerEmulator
             if (!_hasChanged)
                 return;
 
+            this.richTextBoxCode.Visible = false;
             this.richTextBoxCode.SuspendLayout();
 
             CheckKeyword("add", Color.Green);
@@ -360,6 +361,7 @@ namespace AssemblerEmulator
             CheckKeyword(new Regex("'(.)'"), Color.Brown);
 
             this.richTextBoxCode.ResumeLayout();
+            this.richTextBoxCode.Visible = true;
 
             _hasChanged = false;
         }
@@ -393,19 +395,23 @@ namespace AssemblerEmulator
         /// <param name="color"></param>
         private void CheckKeyword(string word, Color color)
         {
-            if (this.richTextBoxCode.Text.Contains(word))
-            {
-                int index = -1;
-                int selectStart = this.richTextBoxCode.SelectionStart;
+            int originalSelectionStart = this.richTextBoxCode.SelectionStart;
+            int originalSelectionLength = this.richTextBoxCode.SelectionLength;
 
-                while ((index = this.richTextBoxCode.Text.IndexOf(word, (index + 1))) != -1)
-                {
-                    this.richTextBoxCode.Select(index, word.Length);
-                    this.richTextBoxCode.SelectionColor = color;
-                    this.richTextBoxCode.Select(selectStart, 0);
-                    this.richTextBoxCode.SelectionColor = Color.Black;
-                }
+            int index = 0;
+            while (index < this.richTextBoxCode.Text.Length)
+            {
+                index = this.richTextBoxCode.Text.IndexOf(word, index);
+                if (index == -1)
+                    break;
+
+                this.richTextBoxCode.Select(index, word.Length);
+                this.richTextBoxCode.SelectionColor = color;
+
+                index += word.Length;
             }
+
+            this.richTextBoxCode.Select(originalSelectionStart, originalSelectionLength);
         }
 
         /// <summary>

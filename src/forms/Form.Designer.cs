@@ -188,6 +188,7 @@
             this.textBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxOutput.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxOutput.HideSelection = false;
             this.textBoxOutput.Location = new System.Drawing.Point(346, 3);
             this.textBoxOutput.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
@@ -203,8 +204,9 @@
             this.listBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxOutput.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.listBoxOutput.FormattingEnabled = true;
-            this.listBoxOutput.ItemHeight = 15;
+            this.listBoxOutput.ItemHeight = 30;
             this.listBoxOutput.Location = new System.Drawing.Point(3, 3);
             this.listBoxOutput.Name = "listBoxOutput";
             this.listBoxOutput.Size = new System.Drawing.Size(337, 124);
@@ -236,6 +238,7 @@
             this.tabControlInfo.Controls.Add(this.tabPageMem);
             this.tabControlInfo.Controls.Add(this.tabPageInstructions);
             this.tabControlInfo.Controls.Add(this.tabPageLabels);
+            this.tabControlInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tabControlInfo.Location = new System.Drawing.Point(695, 3);
             this.tabControlInfo.Name = "tabControlInfo";
             this.tabControlInfo.SelectedIndex = 0;
@@ -245,9 +248,9 @@
             // tabPageRegisters
             // 
             this.tabPageRegisters.Controls.Add(this.listViewRegisters);
-            this.tabPageRegisters.Location = new System.Drawing.Point(4, 24);
+            this.tabPageRegisters.Location = new System.Drawing.Point(4, 29);
             this.tabPageRegisters.Name = "tabPageRegisters";
-            this.tabPageRegisters.Size = new System.Drawing.Size(289, 553);
+            this.tabPageRegisters.Size = new System.Drawing.Size(289, 548);
             this.tabPageRegisters.TabIndex = 3;
             this.tabPageRegisters.Text = "Registers";
             this.tabPageRegisters.UseVisualStyleBackColor = true;
@@ -257,19 +260,20 @@
             this.listViewRegisters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewRegisters.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.listViewRegisters.Location = new System.Drawing.Point(0, 1);
             this.listViewRegisters.Name = "listViewRegisters";
-            this.listViewRegisters.Size = new System.Drawing.Size(286, 553);
+            this.listViewRegisters.Size = new System.Drawing.Size(286, 548);
             this.listViewRegisters.TabIndex = 1;
             this.listViewRegisters.UseCompatibleStateImageBehavior = false;
             // 
             // tabPageMem
             // 
             this.tabPageMem.Controls.Add(this.listViewMemory);
-            this.tabPageMem.Location = new System.Drawing.Point(4, 24);
+            this.tabPageMem.Location = new System.Drawing.Point(4, 29);
             this.tabPageMem.Name = "tabPageMem";
             this.tabPageMem.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMem.Size = new System.Drawing.Size(289, 553);
+            this.tabPageMem.Size = new System.Drawing.Size(289, 548);
             this.tabPageMem.TabIndex = 0;
             this.tabPageMem.Text = "Memory";
             this.tabPageMem.UseVisualStyleBackColor = true;
@@ -281,17 +285,17 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewMemory.Location = new System.Drawing.Point(0, 0);
             this.listViewMemory.Name = "listViewMemory";
-            this.listViewMemory.Size = new System.Drawing.Size(283, 553);
+            this.listViewMemory.Size = new System.Drawing.Size(283, 548);
             this.listViewMemory.TabIndex = 0;
             this.listViewMemory.UseCompatibleStateImageBehavior = false;
             // 
             // tabPageInstructions
             // 
             this.tabPageInstructions.Controls.Add(this.listViewInstructions);
-            this.tabPageInstructions.Location = new System.Drawing.Point(4, 24);
+            this.tabPageInstructions.Location = new System.Drawing.Point(4, 29);
             this.tabPageInstructions.Name = "tabPageInstructions";
             this.tabPageInstructions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageInstructions.Size = new System.Drawing.Size(289, 553);
+            this.tabPageInstructions.Size = new System.Drawing.Size(289, 548);
             this.tabPageInstructions.TabIndex = 1;
             this.tabPageInstructions.Text = "Instructions";
             this.tabPageInstructions.UseVisualStyleBackColor = true;
@@ -303,16 +307,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewInstructions.Location = new System.Drawing.Point(0, 2);
             this.listViewInstructions.Name = "listViewInstructions";
-            this.listViewInstructions.Size = new System.Drawing.Size(283, 553);
+            this.listViewInstructions.Size = new System.Drawing.Size(283, 548);
             this.listViewInstructions.TabIndex = 1;
             this.listViewInstructions.UseCompatibleStateImageBehavior = false;
             // 
             // tabPageLabels
             // 
             this.tabPageLabels.Controls.Add(this.listViewLabels);
-            this.tabPageLabels.Location = new System.Drawing.Point(4, 24);
+            this.tabPageLabels.Location = new System.Drawing.Point(4, 29);
             this.tabPageLabels.Name = "tabPageLabels";
-            this.tabPageLabels.Size = new System.Drawing.Size(289, 553);
+            this.tabPageLabels.Size = new System.Drawing.Size(289, 548);
             this.tabPageLabels.TabIndex = 2;
             this.tabPageLabels.Text = "Labels";
             this.tabPageLabels.UseVisualStyleBackColor = true;
@@ -324,7 +328,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewLabels.Location = new System.Drawing.Point(0, 2);
             this.listViewLabels.Name = "listViewLabels";
-            this.listViewLabels.Size = new System.Drawing.Size(286, 553);
+            this.listViewLabels.Size = new System.Drawing.Size(286, 548);
             this.listViewLabels.TabIndex = 2;
             this.listViewLabels.UseCompatibleStateImageBehavior = false;
             // 
