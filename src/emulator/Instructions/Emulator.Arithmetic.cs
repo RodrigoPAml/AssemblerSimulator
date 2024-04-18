@@ -93,6 +93,7 @@
         private void ArithmeticFloat(string registerD, string registerL, string registerR, ArithmeticOperationEnum op)
         {
             float value = 0;
+            bool isBool = false;
 
             switch (op)
             {
@@ -133,21 +134,25 @@
                     value = GetRegister(registerL).GetFloatValue() / float.Parse(registerR);
                     break;
                 case ArithmeticOperationEnum.SetLessThanFloat:
+                    isBool = true;
                     value = GetRegister(registerL).GetFloatValue() < GetRegister(registerR).GetFloatValue()
                         ? 1
                         : 0;
                     break;
                 case ArithmeticOperationEnum.SetLessThanOrEqualFloat:
+                    isBool = true;
                     value = GetRegister(registerL).GetFloatValue() <= GetRegister(registerR).GetFloatValue()
                         ? 1
                         : 0;
                     break;
                 case ArithmeticOperationEnum.SetGreaterThanFloat:
+                    isBool = true;
                     value = (int)GetRegister(registerL).GetFloatValue() > GetRegister(registerR).GetFloatValue()
                         ? 1
                         : 0;
                     break;
                 case ArithmeticOperationEnum.SetGreaterThanOrEqualFloat:
+                    isBool = true;
                     value = GetRegister(registerL).GetFloatValue() >= GetRegister(registerR).GetFloatValue()
                         ? 1
                         : 0;
@@ -156,7 +161,10 @@
 
             var regD = GetRegister(registerD);
 
-            regD.SetValue(value);
+            if (isBool)
+                regD.SetValue((int)value);
+            else 
+                regD.SetValue(value);
 
             if (_onRegisterChange != null)
                 _onRegisterChange(registerD, regD.Value);
