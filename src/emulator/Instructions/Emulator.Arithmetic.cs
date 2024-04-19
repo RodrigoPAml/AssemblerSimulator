@@ -147,7 +147,7 @@
                     break;
                 case ArithmeticOperationEnum.SetGreaterThanFloat:
                     isBool = true;
-                    value = (int)GetRegister(registerL).GetFloatValue() > GetRegister(registerR).GetFloatValue()
+                    value = GetRegister(registerL).GetFloatValue() > GetRegister(registerR).GetFloatValue()
                         ? 1
                         : 0;
                     break;
