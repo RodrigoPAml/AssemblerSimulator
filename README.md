@@ -186,3 +186,43 @@ A program that do a float sum and print it
 
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/1648e049-328e-4aa3-9e70-a14376c06e68)
 
+# Using the API
+
+Take a look at Program.cs of the AssemblerSimulator project to see the example below
+
+``` C#
+public static void Main()
+{
+    Emulator emulator = new Emulator(OnMemoryChange, OnRegisterChange, OnSyscall);
+
+    emulator.AddInstruction("lir t0 10"); // Carrega valor 10 em t0
+    emulator.AddInstruction("sw t0 0 sp");  // Carrega na pilha o valor 10
+    
+    // Syscall para printar inteiro
+    emulator.AddInstruction("addi v0 v0 1");
+    emulator.AddInstruction("move a0 t0");
+    emulator.AddInstruction("syscall");
+
+    emulator.ValidateInstructions();
+    emulator.ExecuteAll();
+}
+```
+
+Output
+```
+OnRegisterChange t0 10 0 0 0
+OnRegisterChange pc 1 0 0 0
+OnMemoryChange 0 10
+OnMemoryChange 1 0
+OnMemoryChange 2 0
+OnMemoryChange 3 0
+OnRegisterChange pc 2 0 0 0
+OnRegisterChange v0 1 0 0 0
+OnRegisterChange pc 3 0 0 0
+OnRegisterChange a0 10 0 0 0
+OnRegisterChange pc 4 0 0 0
+OnSyscall 1 10 0 0 0
+OnRegisterChange pc 5 0 0 0
+```
+
+
