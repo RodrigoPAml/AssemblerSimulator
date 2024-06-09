@@ -144,6 +144,14 @@ namespace AssemblerEmulator
         }
 
         /// <summary>
+        /// Execute all instructions
+        /// </summary>
+        public void ExecuteAll()
+        {
+            while(ExecuteLine()) { }
+        }
+
+        /// <summary>
         /// Execute one instruction
         /// </summary>
         public bool ExecuteLine()

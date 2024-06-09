@@ -1,22 +1,21 @@
-using Microsoft.Win32;
-using System.Collections;
+using AssemblerEmulator;
 using System.Text;
 using System.Text.RegularExpressions;
 using Timer = System.Windows.Forms.Timer;
 
-namespace AssemblerEmulator
+namespace AssemblerEmulatorGUI
 {
     public partial class Form : System.Windows.Forms.Form
     {
         /// <summary>
-        /// Assembler emulator
+        /// Assembler emulator instance
         /// </summary>
         private Emulator _emulator = new Emulator(OnMemoryChange, OnRegisterChange, OnSyscall);
 
         /// <summary>
         /// Static reference for static functions
         /// </summary>
-        private static Form _form;
+        private static Form _form = null;
 
         /// <summary>
         /// Timer for events
@@ -51,7 +50,7 @@ namespace AssemblerEmulator
 
             _timer = new Timer();
             _timer.Interval = 5000;
-            _timer.Tick += Beautify;
+            _timer.Tick += Beautify!;
             _timer.Start();
         }
 
@@ -263,8 +262,7 @@ namespace AssemblerEmulator
 
                 _emulator.AddInstructions(instuctions);
                 _emulator.ValidateInstructions();
-
-                while (_emulator.ExecuteLine()) { }
+                _emulator.ExecuteAll(); 
 
                 listBoxOutput.Items.Add($"Finished in {(DateTime.Now-startTime).TotalMilliseconds} ms");
             }
@@ -291,6 +289,7 @@ namespace AssemblerEmulator
             if (!_hasChanged)
                 return;
 
+            this.richTextBoxCode.TextChanged -= richTextBoxCode_TextChanged!;
             this.richTextBoxCode.Visible = false;
             this.richTextBoxCode.SuspendLayout();
 
@@ -362,8 +361,10 @@ namespace AssemblerEmulator
 
             this.richTextBoxCode.ResumeLayout();
             this.richTextBoxCode.Visible = true;
+            this.richTextBoxCode.Focus();
 
             _hasChanged = false;
+            this.richTextBoxCode.TextChanged += richTextBoxCode_TextChanged!;
         }
 
         /// <summary>
@@ -432,6 +433,9 @@ namespace AssemblerEmulator
 
                 richTextBoxCode.Text = fileContent;
                 MessageBox.Show("Opened with success");
+
+                _hasChanged = true;
+                Beautify(null!, null!);
             }
         }
 
