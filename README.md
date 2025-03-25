@@ -19,6 +19,8 @@ The program uses windows form for the user interface part
 
 ## Instructions memory
 
+Show the instructions in memory view
+
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/596b4b4c-cce3-47d4-b3a7-452ba675a2fd)
 
 ## Labels View
@@ -86,13 +88,12 @@ sgtef reg1 reg2 reg3 ; set reg1 as one if reg2 >= reg3 (float comparision) else 
 
 Instructios to do logic operations
 
-sfl is shift left and sfr is shift right
 
 ```asm
 and reg1 reg2 reg3 ; reg1 = reg2 & reg3
 xor reg1 reg2 reg3 ; reg1 = reg2 ^ reg3
 or reg1 reg2 reg3 ; reg1 = reg2 | reg3
-sfl reg1 reg2 reg3 ; reg1 = reg2 << reg3
+sfl reg1 reg2 reg3 ; reg1 = reg2 << reg3 
 sfr reg1 reg2 reg3 ; reg1 = reg2 >> reg3
 not reg1 reg2 ; reg1 = ~reg2
 ```
@@ -166,6 +167,8 @@ Program counter register
 
 # Examples
 
+Below some examples that you can run
+
 ## Fibonnaci
 
 A program that outputs n numbers from fibonnaci sequence
@@ -173,6 +176,8 @@ A program that outputs n numbers from fibonnaci sequence
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/17ea12e0-c983-4b32-a631-de503fd8ff36)
 
 ## Even number in the stack
+
+A program that outputs even numbers and stack it on memory
 
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/5e15857e-c566-444b-a155-13d6711ca029)
 
