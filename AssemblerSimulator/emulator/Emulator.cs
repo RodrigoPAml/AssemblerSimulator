@@ -119,14 +119,11 @@ namespace AssemblerEmulator
             _registers.Add(new Register("re", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("ref", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
-            _registers.Add(new Register("gp", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("sp", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("ra", Enumerable.Repeat((byte)0x0, 4).ToArray()));
             _registers.Add(new Register("pc", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
             _memory.AddRange(Enumerable.Repeat((byte)0x0, 1_000));
-
-            _registers.Where(x => x.Name == "gp").First().SetValue(999);
         }
 
         public void SetCallbacks(OnMemoryChange onMemoryChange, OnRegisterChange onRegisterChange, OnSyscall onSyscall)
