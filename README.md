@@ -17,6 +17,8 @@ The program uses windows form for the user interface part
 
 # Views
 
+The main GUI components are:
+
 ## Instructions memory
 
 Show the instructions in memory view
@@ -142,28 +144,53 @@ syscall
 
 # Registers
 
-#### register zero 
-Register that stores the zero value
-#### register one 
-Register that stores the one value
-#### registers s0 to s7
-Registers for saved values
-#### regtisters t0 to t9
-Registers for temp values
-#### registers a0 to a3
-Arguments registers
-#### regtisters v0 to v1
-Returned values registers
-#### register ve
-Register that store the rest of some integer division
-#### register vef
-Register that store the rest of some float division
-#### register gp and sp
-Heap and stack pointer
-#### register ra
-Register to hold the return address
-#### register pc
-Program counter register
+# MIPS Register Overview
+
+In the MIPS architecture, different registers have specific purposes to facilitate program execution and organization. Here's a breakdown of the key registers:
+
+### 1. **Zero Register (`$zero`)**
+   - **Description**: Always stores the value 0.
+   - **Use Case**: Used when you need the constant value `0`.
+
+### 2. **One Register (`$one`)**
+   - **Description**: Always stores the value 1.
+   - **Use Case**: Used when you need the constant value `1`.
+
+### 3. **Saved Registers (`$s0` to `$s7`)**
+   - **Description**: Registers used to store saved values across function calls.
+   - **Use Case**: Preserved across function calls, typically used by callee functions.
+
+### 4. **Temporary Registers (`$t0` to `$t9`)**
+   - **Description**: Registers used for temporary values that do not need to be preserved across function calls.
+   - **Use Case**: Can be used for intermediate computations, values may be overwritten.
+
+### 5. **Argument Registers (`$a0` to `$a3`)**
+   - **Description**: Registers used to pass the first four arguments to functions.
+   - **Use Case**: The arguments to a function are passed via these registers.
+
+### 6. **Return Value Registers (`$v0` to `$v1`)**
+   - **Description**: Registers used to store return values from functions.
+   - **Use Case**: The return values of a function are placed in `$v0` (and `$v1` if there are multiple return values).
+
+### 7. **Rest of Integer Division (`$ve`)**
+   - **Description**: Register used to store the remainder (rest) of an integer division.
+   - **Use Case**: This is where the remainder from integer division operations is stored.
+
+### 8. **Rest of Float Division (`$vef`)**
+   - **Description**: Register used to store the remainder (rest) of a floating-point division.
+   - **Use Case**: Stores the remainder from floating-point division operations.
+     
+### 9. **Stack Pointer (`$sp`)**
+   - **Description**: Points to the top of the stack.
+   - **Use Case**: Used for stack management, specifically in function calls and local variable storage.
+
+### 10. **Return Address (`$ra`)**
+   - **Description**: Holds the return address for function calls.
+   - **Use Case**: Used by the `jal` (Jump and Link) instruction to store the address to return to after a function call.
+
+### 11. **Program Counter (`$pc`)**
+   - **Description**: Points to the address of the next instruction to be executed.
+   - **Use Case**: Keeps track of the program's current execution state and flow.
 
 # Examples
 
