@@ -3,7 +3,7 @@
     public partial class Emulator
     {
         /// <summary>
-        /// Contains the main logic operation instructions 
+        /// Contains the main logic operation instructions implementations
         /// </summary>
         private void Syscall()
         {

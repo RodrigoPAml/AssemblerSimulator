@@ -59,11 +59,11 @@ namespace AssemblerEmulator
         /// <summary>
         /// Callbacks to notify changes in memory and registers, or syscalls
         /// </summary>
-        private OnMemoryChange? _onMemoryChange;
-        private OnRegisterChange? _onRegisterChange;
-        private OnSyscall? _onSyscall;
+        private OnMemoryChange _onMemoryChange;
+        private OnRegisterChange _onRegisterChange;
+        private OnSyscall _onSyscall;
 
-        public Emulator(OnMemoryChange? onMemoryChange, OnRegisterChange? onRegisterChange, OnSyscall? onSyscall)
+        public Emulator(OnMemoryChange onMemoryChange, OnRegisterChange onRegisterChange, OnSyscall onSyscall)
         {
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
@@ -129,7 +129,7 @@ namespace AssemblerEmulator
             _registers.Where(x => x.Name == "gp").First().SetValue(999);
         }
 
-        public void SetCallbacks(OnMemoryChange? onMemoryChange, OnRegisterChange? onRegisterChange, OnSyscall? onSyscall)
+        public void SetCallbacks(OnMemoryChange onMemoryChange, OnRegisterChange onRegisterChange, OnSyscall onSyscall)
         {
             _onMemoryChange = onMemoryChange;
             _onRegisterChange = onRegisterChange;

@@ -3,7 +3,7 @@
     public partial class Emulator
     {
         /// <summary>
-        /// Contains the arithmetic instructions 
+        /// Contains the arithmetic instructions implementations
         /// </summary>
         private void Arithmetic(string registerD, string registerL, string registerR, ArithmeticOperationEnum op)
         {
@@ -88,7 +88,7 @@
         }
 
         /// <summary>
-        /// Contains the arithmetic with float instructions 
+        /// Contains the arithmetic with float instructions implementations
         /// </summary>
         private void ArithmeticFloat(string registerD, string registerL, string registerR, ArithmeticOperationEnum op)
         {

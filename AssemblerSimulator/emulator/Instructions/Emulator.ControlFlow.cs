@@ -3,7 +3,7 @@
     public partial class Emulator
     {
         /// <summary>
-        /// Contains the flow control instructions 
+        /// Contains the flow control instructions implementations
         /// </summary>
         private bool ControlFlow(string registerD, string registerL, string registerR, ControlFlowOperationEnum op)
         {

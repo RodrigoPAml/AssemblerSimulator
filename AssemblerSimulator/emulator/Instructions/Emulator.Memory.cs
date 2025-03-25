@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 
 namespace AssemblerEmulator
@@ -7,7 +6,7 @@ namespace AssemblerEmulator
     public partial class Emulator
     {
         /// <summary>
-        /// Contains the main memory instructions 
+        /// Contains the main memory instructions implementations
         /// </summary>
         private void Memory(string registerD, string registerL, string registerR, MemoryOperationEnum op)
         {
