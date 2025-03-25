@@ -10,3 +10,4 @@
 /.vs
 /AssemblerSimulator/bin/Debug/net6.0
 /AssemblerSimulator/bin/Release/net6.0
+/AssemblerSimulatorGUI/bin/Release/net8.0-windows
