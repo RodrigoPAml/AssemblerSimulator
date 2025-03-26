@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace AssemblerEmulator
+namespace AssemblerSimulator
 {
     public partial class Emulator
     {

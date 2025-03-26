@@ -1,4 +1,4 @@
-﻿namespace AssemblerEmulator
+﻿namespace AssemblerSimulator
 {
     /// <summary>
     /// Represents a memory operation

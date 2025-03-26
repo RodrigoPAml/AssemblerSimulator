@@ -1,4 +1,4 @@
-﻿namespace AssemblerEmulator
+﻿namespace AssemblerSimulator
 {
     /// <summary>
     /// Callbacks to notify changes in the emulator, just used in the front-end

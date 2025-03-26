@@ -1,4 +1,4 @@
-﻿namespace AssemblerEmulator
+﻿namespace AssemblerSimulator
 {
     public class Program
     {

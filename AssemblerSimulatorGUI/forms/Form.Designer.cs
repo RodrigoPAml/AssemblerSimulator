@@ -1,4 +1,4 @@
-﻿namespace AssemblerEmulatorGUI
+﻿namespace AssemblerSimulatorGUI
 {
     partial class Form
     {

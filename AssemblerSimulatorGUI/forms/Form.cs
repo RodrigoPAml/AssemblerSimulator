@@ -1,9 +1,9 @@
-using AssemblerEmulator;
+using AssemblerSimulator;
 using System.Text;
 using System.Text.RegularExpressions;
 using Timer = System.Windows.Forms.Timer;
 
-namespace AssemblerEmulatorGUI
+namespace AssemblerSimulatorGUI
 {
     public partial class Form : System.Windows.Forms.Form
     {

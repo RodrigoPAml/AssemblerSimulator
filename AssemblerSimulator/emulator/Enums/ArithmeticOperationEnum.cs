@@ -1,4 +1,4 @@
-﻿namespace AssemblerEmulator
+﻿namespace AssemblerSimulator
 {
     /// <summary>
     /// Represents an arithmetic operation
