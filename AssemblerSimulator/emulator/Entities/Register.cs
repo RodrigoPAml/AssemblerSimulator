@@ -16,6 +16,16 @@
         public byte[] Value { get; private set; }
 
         /// <summary>
+        /// Register value casted as integer
+        /// </summary>
+        public int IntValue { get; private set; }
+
+        /// <summary>
+        /// Register value casted as float
+        /// </summary>
+        public float FloatValue { get; private set; }
+
+        /// <summary>
         /// Register size in bits
         /// </summary>
         public int Size => Value.Length * 4;
@@ -24,6 +34,8 @@
         {
             Name = name;
             Value = value;
+            IntValue = BitConverter.ToInt32(Value);
+            FloatValue = BitConverter.ToSingle(Value);
         }
 
         public Register(string name, int value)
@@ -38,6 +50,8 @@
         public void SetValue(int value)
         {
             Value = BitConverter.GetBytes(value);
+            IntValue = value;
+            FloatValue = value;
         }
 
         /// <summary>
@@ -46,6 +60,8 @@
         public void SetValue(float value)
         {
             Value = BitConverter.GetBytes(value);
+            FloatValue = value;
+            IntValue = (int)value;
         }
 
         /// <summary>
@@ -54,6 +70,8 @@
         public void SetValue(byte value)
         {
             Value[0] = value;
+            IntValue = BitConverter.ToInt32(Value);
+            FloatValue = BitConverter.ToSingle(Value);
         }
 
         /// <summary>
@@ -62,6 +80,8 @@
         public void SetValue(byte[] value)
         {
             Value = value;
+            IntValue = BitConverter.ToInt32(Value);
+            FloatValue = BitConverter.ToSingle(Value);
         }
 
         /// <summary>
@@ -70,7 +90,7 @@
         /// <returns></returns>
         public int GetIntValue()
         {
-            return BitConverter.ToInt32(Value);
+            return IntValue;
         }
 
         /// <summary>
@@ -79,7 +99,7 @@
         /// <returns></returns>
         public float GetFloatValue()
         {
-            return BitConverter.ToSingle(Value);
+            return FloatValue;
         }
     }
 }

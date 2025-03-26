@@ -36,11 +36,10 @@
                         string key = $"{registerD}:";
                         int address = _labels[key] + 1;
 
-                        var ra = _registers.Where(x => x.Name == "ra").FirstOrDefault();
+                        var ra = GetRegister("ra");
                         ra.SetValue(ProgramCounter + 1);
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(ra.Name, ra.Value);
+                        LocalOnRegisterChange(ra.Name, ra.Value);
 
                         GetRegister("pc").SetValue(address);
                         changePc = true;
@@ -75,9 +74,7 @@
             if(changePc)
             {
                 var regPc = GetRegister("pc");
-
-                if (_onRegisterChange != null)
-                    _onRegisterChange(regPc.Name, regPc.Value);
+                LocalOnRegisterChange(regPc.Name, regPc.Value);
             }
 
             return changePc; 

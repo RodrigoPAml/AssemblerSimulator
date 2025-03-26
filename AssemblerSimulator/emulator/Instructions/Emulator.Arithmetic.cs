@@ -29,8 +29,7 @@
                     var re = GetRegister("re");
                     re.SetValue(rest);
 
-                    if (_onRegisterChange != null)
-                        _onRegisterChange(re.Name, re.Value);
+                    LocalOnRegisterChange(re.Name, re.Value);
                     break;
                 case ArithmeticOperationEnum.Multiply:
                     value = GetRegister(registerL).GetIntValue() * GetRegister(registerR).GetIntValue();
@@ -83,8 +82,7 @@
 
             regD.SetValue(value);
 
-            if(_onRegisterChange != null)
-                _onRegisterChange(registerD, regD.Value);
+            LocalOnRegisterChange(registerD, regD.Value);
         }
 
         /// <summary>
@@ -115,8 +113,7 @@
                     var re = GetRegister("ref");
                     re.SetValue(rest);
 
-                    if (_onRegisterChange != null)
-                        _onRegisterChange(re.Name, re.Value);
+                    LocalOnRegisterChange(re.Name, re.Value);
                     break;
                 case ArithmeticOperationEnum.MultiplyFloat:
                     value = GetRegister(registerL).GetFloatValue() * GetRegister(registerR).GetFloatValue();
@@ -166,8 +163,7 @@
             else 
                 regD.SetValue(value);
 
-            if (_onRegisterChange != null)
-                _onRegisterChange(registerD, regD.Value);
+            LocalOnRegisterChange(registerD, regD.Value);
         }
     }
 }

@@ -52,6 +52,8 @@ namespace AssemblerSimulatorGUI
             _timer.Interval = 5000;
             _timer.Tick += Beautify!;
             _timer.Start();
+
+            _emulator.PostergateCallbacks = true;
         }
 
         /// <summary>
@@ -248,6 +250,7 @@ namespace AssemblerSimulatorGUI
             try
             {
                 _emulator.Reset();
+
                 PopulateMemoryView();
                 PopulateInstructionsView();
                 PopulateRegistersView();
@@ -258,13 +261,14 @@ namespace AssemblerSimulatorGUI
 
                 var instuctions = richTextBoxCode.Text.Split('\n').ToList();
 
-                DateTime startTime = DateTime.Now;
-
                 _emulator.AddInstructions(instuctions);
                 _emulator.ValidateInstructions();
+                var startTime = DateTime.Now;
                 _emulator.ExecuteAll(); 
 
                 listBoxOutput.Items.Add($"Finished in {(DateTime.Now-startTime).TotalMilliseconds} ms");
+
+                _emulator.InvokeCallbacks();
             }
             catch (Exception ex)
             {

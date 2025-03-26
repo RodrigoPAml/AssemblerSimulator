@@ -18,8 +18,7 @@ namespace AssemblerSimulator
 
                         regD.SetValue(GetRegister(registerL).Value);
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(registerD, regD.Value);
+                        LocalOnRegisterChange(registerD, regD.Value);
                     }
 
                     break;
@@ -42,8 +41,7 @@ namespace AssemblerSimulator
 
                         regD.SetValue(bytes);
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(registerD, regD.Value);
+                        LocalOnRegisterChange(registerD, regD.Value);
                     }
                     break;
                 case MemoryOperationEnum.StoreWord:
@@ -59,14 +57,11 @@ namespace AssemblerSimulator
                         _memory[mem+1] = value[1];
                         _memory[mem+2] = value[2];
                         _memory[mem+3] = value[3];
-
-                        if(_onMemoryChange != null)
-                        {
-                            _onMemoryChange(mem, value[0]);
-                            _onMemoryChange(mem + 1, value[1]);
-                            _onMemoryChange(mem + 2, value[2]);
-                            _onMemoryChange(mem + 3, value[3]);
-                        }
+                   
+                        LocalOnMemoryChange(mem, value[0]);
+                        LocalOnMemoryChange(mem + 1, value[1]);
+                        LocalOnMemoryChange(mem + 2, value[2]);
+                        LocalOnMemoryChange(mem + 3, value[3]);
                     }
                     break;
                 case MemoryOperationEnum.LoadByte:
@@ -83,8 +78,7 @@ namespace AssemblerSimulator
 
                         regD.SetValue(@byte);
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(registerD, regD.Value);
+                        LocalOnRegisterChange(registerD, regD.Value);
                     }
                     break;
                 case MemoryOperationEnum.StoreByte:
@@ -98,8 +92,7 @@ namespace AssemblerSimulator
 
                         _memory[mem] = value[0];
                         
-                        if(_onMemoryChange != null)
-                            _onMemoryChange(mem, value[0]);
+                        LocalOnMemoryChange(mem, value[0]);
                     }
                     break;
                 case MemoryOperationEnum.LoadIntRegister:
@@ -109,8 +102,7 @@ namespace AssemblerSimulator
 
                         reg.SetValue(value);
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(registerD, reg.Value);
+                        LocalOnRegisterChange(registerD, reg.Value);
                     }
                     break;
                 case MemoryOperationEnum.LoadByteRegister:
@@ -120,8 +112,7 @@ namespace AssemblerSimulator
                         
                         reg.SetValue(value);
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(registerD, reg.Value);
+                        LocalOnRegisterChange(registerD, reg.Value);
                     }
                     break;
                 case MemoryOperationEnum.LoadFloatRegister:
@@ -131,8 +122,7 @@ namespace AssemblerSimulator
 
                         reg.SetValue(value);
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(registerD, reg.Value);
+                        LocalOnRegisterChange(registerD, reg.Value);
                     }
                     break;
                 case MemoryOperationEnum.LoadCharRegister:
@@ -142,8 +132,7 @@ namespace AssemblerSimulator
 
                         reg.SetValue(value[0]);
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(registerD, reg.Value);
+                        LocalOnRegisterChange(registerD, reg.Value);
                     }
                     break;
                 case MemoryOperationEnum.ConvertIntFloat:
@@ -153,8 +142,7 @@ namespace AssemblerSimulator
 
                         reg.SetValue((float)regValue.GetIntValue());
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(registerD, reg.Value);
+                        LocalOnRegisterChange(registerD, reg.Value);
                     }
                     break;
                 case MemoryOperationEnum.ConvertFloatInt:
@@ -164,8 +152,7 @@ namespace AssemblerSimulator
 
                         reg.SetValue((int)regValue.GetFloatValue());
 
-                        if (_onRegisterChange != null)
-                            _onRegisterChange(registerD, reg.Value);
+                        LocalOnRegisterChange(registerD, reg.Value);
                     }
                     break;
             }

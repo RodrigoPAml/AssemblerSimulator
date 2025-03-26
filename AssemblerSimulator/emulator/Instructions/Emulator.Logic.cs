@@ -35,8 +35,7 @@
 
             regD.SetValue(value);
 
-            if (_onRegisterChange != null)
-                _onRegisterChange(registerD, regD.Value);
+            LocalOnRegisterChange(registerD, regD.Value);
         }
 
         private byte[] ByteAnd(byte[] arr1, byte[] arr2)

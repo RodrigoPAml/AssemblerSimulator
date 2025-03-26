@@ -7,22 +7,22 @@ namespace AssemblerSimulator
         /// <summary>
         /// Instructions (or memory instruction)
         /// </summary>
-        private List<string> _instructions = new List<string>();
+        private List<string> _instructions = new();
 
         /// <summary>
         /// Label in the code (reference to an address)
         /// </summary>
-        private Dictionary<string, int> _labels = new Dictionary<string, int>();
+        private Dictionary<string, int> _labels = new();
 
         /// <summary>
         /// Registers
         /// </summary>
-        private List<Register> _registers = new List<Register>();
+        private Dictionary<string, Register> _registers = new();
 
         /// <summary>
         /// The program main memory
         /// </summary>
-        private List<byte> _memory = new List<byte>();
+        private List<byte> _memory = new();
 
         /// <summary>
         /// The program counter
@@ -44,24 +44,17 @@ namespace AssemblerSimulator
         /// Return a copy of the registers
         /// </summary>
         /// <returns></returns>
-        public List<Register> GetRegisters() => _registers.Select(x => new Register(x.Name, x.Value)).ToList();
+        public List<Register> GetRegisters() => _registers.Select(x => new Register(x.Key, x.Value.Value)).ToList();
 
         /// <summary>
         /// Return if a register exists
         /// </summary>
-        private bool RegisterExists(string reg) => _registers.Any(x => x.Name == reg);
+        private bool RegisterExists(string reg) => _registers.ContainsKey(reg);
 
         /// <summary>
         /// Return a register
         /// </summary>
-        private Register GetRegister(string reg) => _registers.Where(x => x.Name == reg).FirstOrDefault();
-
-        /// <summary>
-        /// Callbacks to notify changes in memory and registers, or syscalls
-        /// </summary>
-        private OnMemoryChange _onMemoryChange;
-        private OnRegisterChange _onRegisterChange;
-        private OnSyscall _onSyscall;
+        private Register GetRegister(string reg) => _registers[reg];
 
         public Emulator(OnMemoryChange onMemoryChange, OnRegisterChange onRegisterChange, OnSyscall onSyscall)
         {
@@ -70,9 +63,9 @@ namespace AssemblerSimulator
 
             Reset();
 
-            _onMemoryChange = onMemoryChange;
-            _onRegisterChange = onRegisterChange;
-            _onSyscall = onSyscall;
+            this.onMemoryChange = onMemoryChange;
+            this.onRegisterChange = onRegisterChange;
+            this.onSyscall = onSyscall;
         }
 
         /// <summary>
@@ -80,64 +73,70 @@ namespace AssemblerSimulator
         /// </summary>
         public void Reset()
         {
+            ClearPostergation();
+
             _registers.Clear();
             _memory.Clear();
             _instructions.Clear();
             _labels.Clear();
 
-            _registers.Add(new Register("zero", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("one", 1));
+            _registers.Add("zero", new Register("zero", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("one", new Register("one", 1));
 
-            _registers.Add(new Register("s0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("s1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("s2", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("s3", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("s4", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("s5", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("s6", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("s7", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("s0", new Register("s0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("s1", new Register("s1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("s2", new Register("s2", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("s3", new Register("s3", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("s4", new Register("s4", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("s5", new Register("s5", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("s6", new Register("s6", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("s7", new Register("s7", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
-            _registers.Add(new Register("t0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("t1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("t2", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("t3", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("t4", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("t5", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("t6", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("t7", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("t8", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("t9", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t0", new Register("t0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t1", new Register("t1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t2", new Register("t2", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t3", new Register("t3", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t4", new Register("t4", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t5", new Register("t5", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t6", new Register("t6", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t7", new Register("t7", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t8", new Register("t8", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("t9", new Register("t9", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
-            _registers.Add(new Register("a0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("a1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("a2", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("a3", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("a0", new Register("a0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("a1", new Register("a1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("a2", new Register("a2", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("a3", new Register("a3", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
-            _registers.Add(new Register("v0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("v1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("v0", new Register("v0", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("v1", new Register("v1", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
-            _registers.Add(new Register("re", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("ref", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("re", new Register("re", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("ref", new Register("ref", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
-            _registers.Add(new Register("sp", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("ra", Enumerable.Repeat((byte)0x0, 4).ToArray()));
-            _registers.Add(new Register("pc", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("sp", new Register("sp", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("ra", new Register("ra", Enumerable.Repeat((byte)0x0, 4).ToArray()));
+            _registers.Add("pc", new Register("pc", Enumerable.Repeat((byte)0x0, 4).ToArray()));
 
             _memory.AddRange(Enumerable.Repeat((byte)0x0, 1_000));
         }
 
         public void SetCallbacks(OnMemoryChange onMemoryChange, OnRegisterChange onRegisterChange, OnSyscall onSyscall)
         {
-            _onMemoryChange = onMemoryChange;
-            _onRegisterChange = onRegisterChange;
-            _onSyscall = onSyscall;
+            this.onMemoryChange = onMemoryChange;
+            this.onRegisterChange = onRegisterChange;
+            this.onSyscall = onSyscall;
+
+            ClearPostergation();
         }
 
         public void RemoveCallbacks()
         {
-            _onMemoryChange = null;
-            _onRegisterChange = null;
-            _onSyscall = null;
+            onMemoryChange = null;
+            onRegisterChange = null;
+            onSyscall = null;
+
+            ClearPostergation();
         }
 
         /// <summary>
@@ -145,7 +144,7 @@ namespace AssemblerSimulator
         /// </summary>
         public void ExecuteAll()
         {
-            while(ExecuteLine()) { }
+            while (ExecuteLine()) { }
         }
 
         /// <summary>
@@ -326,7 +325,7 @@ namespace AssemblerSimulator
                     throw new Exception($"Invalid instruction: {operation} in line {programCounter}");
             }
 
-            if(changedPc == false)
+            if (changedPc == false)
             {
                 // Increment pc
                 programCounter++;
@@ -334,8 +333,7 @@ namespace AssemblerSimulator
                 var regPc = GetRegister("pc");
                 regPc.SetValue(programCounter);
 
-                if (_onRegisterChange != null)
-                    _onRegisterChange(regPc.Name, regPc.Value);
+                LocalOnRegisterChange(regPc.Name, regPc.Value);
             }
 
             return true;
