@@ -2,7 +2,9 @@
 
 An assembler simulator based on MIPS architecture
 
-The program uses windows form for the user interface part
+This program is used to execute my programming language called **[Manco](https://github.com/RodrigoPAml/MancoLanguage)** you can generate cool and complex assembly from there that will run here
+
+With a windows form user interface ans some features:
 
 - With code editor to load an save asm files and add code comments
 - Option to run the code, reset the simulator and see output
@@ -195,6 +197,8 @@ In the MIPS architecture, different registers have specific purposes to facilita
 # Examples
 
 Below some examples that you can run (see Examples folder)
+
+For more complex examples, write a program in my language **[Manco](https://github.com/RodrigoPAml/MancoLanguage)** and run the assembly here if you want. 
 
 ## Fibonnaci
 
