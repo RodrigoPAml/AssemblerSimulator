@@ -63,38 +63,44 @@
 
         private void LocalOnRegisterChange(string name, byte[] value)
         {
-            if(PostergateCallbacks)
+            if (onRegisterChange == null)
+                return;
+
+            if (PostergateCallbacks)
             {
                 _localRegisterChanges.Add((name, value));
                 return;
             }
 
-            if(onRegisterChange != null)
-                onRegisterChange(name, value);
+            onRegisterChange(name, value);
         }
 
         private void LocalOnMemoryChange(int address, byte value)
         {
+            if (onMemoryChange == null)
+                return;
+            
             if (PostergateCallbacks)
             {
                 _localMemoryChanges.Add((address, value));
                 return;
             }
 
-            if (onMemoryChange != null)
-                onMemoryChange(address, value);
+            onMemoryChange(address, value);
         }
 
         private void LocalOnSyscall(int code, byte[] value)
         {
+            if (onSyscall == null)
+                return;
+
             if (PostergateCallbacks)
             {
                 _localSyscalls.Add((code, value));
                 return;
             }
 
-            if (onSyscall != null)
-                onSyscall(code, value);
+            onSyscall(code, value);
         }
     }
 }
