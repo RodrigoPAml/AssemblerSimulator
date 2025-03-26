@@ -11,7 +11,7 @@ The program uses windows form for the user interface part
 - 32 bits registers implemented
 - Address is oriented in byte (8 bits)
 - Syscall for output of char, integers and floats
-- You can disable the emulator feed (GUI, callbacks, etc) to have max performance
+- You can disable the emulator feed (GUI, callbacks, etc) to have better performance, mainly in the UI
 
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/ac2505b2-7e64-4d98-9922-4692665b86ea)
 
@@ -33,7 +33,7 @@ Show the labels poiting addresses
 
 ## Memory View
 
-Show program memory per byte or char
+Show program memory per byte in hex or character
 
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/aae590fe-fefb-4bee-837e-34a204a9daf6)
 
@@ -218,7 +218,7 @@ A program that do a float sum and print it
 
 ![image](https://github.com/RodrigoPAml/AssemblerSimulator/assets/41243039/1648e049-328e-4aa3-9e70-a14376c06e68)
 
-# Using the API
+# Using the program
 
 Take a look at Program.cs of the AssemblerSimulator project to see the example below
 
