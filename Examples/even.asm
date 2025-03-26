@@ -26,8 +26,3 @@ print_stack:
   j continue
 end:
   
-
-  
-  
-  
-  
