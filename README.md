@@ -194,7 +194,7 @@ In the MIPS architecture, different registers have specific purposes to facilita
 
 # Examples
 
-Below some examples that you can run
+Below some examples that you can run (see Examples folder)
 
 ## Fibonnaci
 
